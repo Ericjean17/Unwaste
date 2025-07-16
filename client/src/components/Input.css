@@ -1,0 +1,23 @@
+.user-input-container {
+    display: flex;
+    flex-direction: column;
+    margin: 0.5rem;
+}
+
+.user-input input::placeholder {
+    font-size: 0.8rem;
+}
+
+.user-input label {
+    font-size: 0.875rem;
+    margin-bottom: 0.2rem;
+    margin-left: 0.2rem;
+}
+
+.user-input input {
+    font-size: 1rem; /* keep input text at normal size */
+    padding: 0.5rem;
+    border-radius: 8px;
+    border: none;
+    background-color: rgb(235, 235, 235);
+}
