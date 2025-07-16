@@ -15,7 +15,7 @@ export default function RegisterPage() {
 				const response = await fetch("http://localhost:3000/register", {
 					method: "POST",
 					headers: { "Content-Type": "application/json"},
-					body: JSON.stringify(form) // converts form data into json and puts it into req.body
+					body: JSON.stringify(form) // converts form data into json and puts it into req.bodyd
 				})
 				
 				const data = await response.json(); // converts json back into js object
