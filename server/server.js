@@ -16,13 +16,13 @@ app.post("/register", async (req, res) => {
     const { username, password } = req.body;
 
     try {
-        //Check if user exists
+        // Check if a username already exists inside database
         const userExists = await pool.query("SELECT * FROM users WHERE username = $1", [username]);
-        if (userExists.rows.length > 0) { // print this out to see why it is rows.length
+        if (userExists.rows.length > 0) { // If > 0, then there exists a user with that username. Inside rows is an array of user objects containing an id, username, password
             return res.status(400).json({ message: "Username already taken" });
         }
 
-        // If user exists, hash password with bcrypt
+        // If username is not taken, hash password with bcrypt
         const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
@@ -30,6 +30,31 @@ app.post("/register", async (req, res) => {
         res.json(newUser.rows[0]);
         //res.status(201).json(newUser.rows);
     
+    } catch (err) {
+        console.error(err.message);
+    }
+})
+
+app.post("/login", async (req, res) => {
+    const { username, password } = req.body;
+
+    try {
+        // Check if user exists inside database
+        const userQuery = await pool.query("SELECT * FROM users WHERE username = $1", [username])
+        if (userQuery.rows.length === 0) {
+            return res.status(401).json({ message: "Invalid username or password" })
+        }
+        
+        const user = userQuery.rows[0]; // Stores unique username and it's password
+        
+        // Check if user inputted password matches the hashed password as well
+        const validPassword = await bcrypt.compare(password, user.password_hash);
+        if (!validPassword) {
+            return res.status(401).json({ message: "Invalid username or password" })
+        }
+        // Create and return a token/session here
+
+        res.json({ message: "Login successful", userId: user.id})
     } catch (err) {
         console.error(err.message);
     }

@@ -11,6 +11,11 @@ export default function RegisterPage() {
 		
 		const handleSubmit = async e => {
 			e.preventDefault();
+			if (form.username === "" || form.password === "") {
+				alert("Missing username or password");
+				return;
+			}
+
 			try {
 				const response = await fetch("http://localhost:3000/register", {
 					method: "POST",
