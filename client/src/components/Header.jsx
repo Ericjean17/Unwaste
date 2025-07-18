@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./Header.css";
+import "../css/Header.css";
 
 const Header = () => {
 	const toggleMenu = () => {
@@ -7,7 +7,7 @@ const Header = () => {
 	}
 
 	return (
-		<header className='primary-header text-font'>
+		<header id='header' className='primary-header text-font'>
 			<div className="header-container">
 				<div>
 					<a href="/">

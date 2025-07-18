@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./RegisterPage.css";
+import "../css/RegisterPage.css";
 import Header from "../components/Header";
 import Input from "../components/Input";
 

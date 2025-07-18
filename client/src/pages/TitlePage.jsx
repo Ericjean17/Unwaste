@@ -1,5 +1,5 @@
 import React from 'react';
-import "./TitlePage.css";
+import "../css/TitlePage.css";
 import Header from "../components/Header";
 
 function TitlePage() {

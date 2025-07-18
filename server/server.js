@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors"); // why this
 const bcrypt = require("bcrypt");
-const pool = require("./db");
+const pool = require("./db").default;
 
 const corsOptions = {
     origin: ["http://localhost:5173"], // only accept requests from frontend server (vite)
@@ -19,7 +19,7 @@ app.post("/register", async (req, res) => {
         // Check if a username already exists inside database
         const userExists = await pool.query("SELECT * FROM users WHERE username = $1", [username]);
         if (userExists.rows.length > 0) { // If > 0, then there exists a user with that username. Inside rows is an array of user objects containing an id, username, password
-            return res.status(400).json({ message: "Username already taken" });
+            return res.status(400).json({ message: "Username taken" });
         }
 
         // If username is not taken, hash password with bcrypt

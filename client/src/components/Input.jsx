@@ -1,11 +1,14 @@
-import "./Input.css";
+import "../css/Input.css";
 
 const Input = ({ label, name, type, id, value, onChange }) => {
+  const showAsterisk = value.trim() === "";
+  
   return (
     <div className="user-input">
       <div className="user-input-container">
         <label htmlFor={id}>
-          {label}
+          {label}{" "}
+          {showAsterisk && <span style={{ color: "red" }}>*</span>}
         </label>
         <input 
           type={type} 
@@ -14,6 +17,7 @@ const Input = ({ label, name, type, id, value, onChange }) => {
           placeholder={label}
           value={value}
           onChange={onChange}
+          required
         />
       </div>
     </div>
