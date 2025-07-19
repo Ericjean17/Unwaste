@@ -2,20 +2,16 @@ import "../css/IngredientCard.css";
 
 const IngredientCard = ({ category, ingredients }) => {
 	return (
-		<>
-			<div className="card">
-				<div className="card-container">
-					<div className="ingredient-name">
-						<h4>{category}</h4>
-					</div>
-					<ul className="ingredients">
-						{ingredients.map((ingredient, i) => 
-							<li key={i} >{ingredient}</li>
-						)}
-					</ul>
-				</div>
+		<div className="card">
+			<div className="card-container">
+				<h4 className="category">{category}</h4>
+				<ul className="ingredients">
+					{ingredients.map((ingredient, i) => 
+						<li key={i} >{ingredient}</li>
+					)}
+				</ul>
 			</div>
-		</>
+		</div>
 	)
 }
 

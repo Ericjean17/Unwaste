@@ -47,7 +47,7 @@ export default function RegisterPage() {
 			<section className="register-page">
 				<Header />
 				<div className="register-container text-font">
-					<form onSubmit={handleSubmit}>
+					<form className="form" onSubmit={handleSubmit}>
 						<div className="info">
 							<h2>Sign Up</h2>
 							<div className="user-info">

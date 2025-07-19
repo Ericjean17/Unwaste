@@ -25,7 +25,7 @@ h1 {
     text-align: center;
 }
 
-div p {
+.description {
     margin-top: 20px;
     font-size: 1.3rem;
     text-align: center;

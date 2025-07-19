@@ -1,9 +1,31 @@
 .ingredients-container {
-    padding: 3rem;
+    padding: 3rem clamp(1.5rem, 0.408rem + 4.66vw, 6rem); /* Smaller padding for all screens */
+    margin: 0 auto;
+    max-width: 1400px;
+}
+
+/* Optional: tweak for larger screens
+@media screen and (min-width: 768px) {
+    .ingredients-container {
+        padding: 3rem 4rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .ingredients-container {
+        padding: 3rem 6rem;
+    }
+} */
+
+@media screen and (min-width: 432px) {
+    .ingredient-form {
+        display: flex;
+    }
 }
 
 .ingredients-container>h3 {
     font-size: 2rem;
+    margin-bottom: 0.7rem;
 }
 
 .input-container {
@@ -17,13 +39,9 @@
     border-color: rgb(250, 250, 250);
 }
 
-.category-add {
-    width: 100%;
-}
-
 .ingredient-submit {
-    padding: 0.25rem 2.5rem;
-    width: auto;
+    padding: 0.25rem 3rem;
+    max-width: 125px;
     background-color: green;
     color: rgb(250, 250, 250);
     border: none;
@@ -40,4 +58,11 @@
     flex-grow: 2;
     text-align: center;
     border-radius: 4px;
+    max-width: 250px;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(275px, 1fr));
+    gap: 1.5rem;
 }

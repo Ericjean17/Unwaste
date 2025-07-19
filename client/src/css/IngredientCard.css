@@ -1,13 +1,12 @@
 .card-container {
     background-color: rgba(238, 237, 237, 0.904);
     border-radius: 10px;
-    width: 400px;
+    width: 100%;
     padding: 1rem;
-    margin-bottom: 1rem;
     border: 1px solid rgb(204, 204, 204);
 }
 
-.ingredient-name h4 {
+.category {
     text-align: center;
     margin-bottom: 0.5rem;
 }
@@ -18,10 +17,3 @@
     padding: 0.5rem;
     border-radius: 4px;
 }
-
-@media screen and (min-width: 360px) {
-    .card-container {
-        width: 100%;
-    }
-}
-

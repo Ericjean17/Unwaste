@@ -40,7 +40,7 @@ export default function LoginPage() {
 			<section className="register-page">
 				<Header />
 				<div className="register-container text-font">
-					<form onSubmit={handleLogin}>
+					<form className="form" onSubmit={handleLogin}>
 						<div className="info">
 							<h2>Login</h2>
 							<div className="user-info">
