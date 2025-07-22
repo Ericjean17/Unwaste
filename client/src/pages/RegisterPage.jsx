@@ -27,7 +27,7 @@ export default function RegisterPage() {
 
 				if (response.ok) {
 					console.log("User registered", data);
-					window.location.href = "/home";
+					window.location.href = "/login";
 				} else {
 					alert(`Registration failed: ${data.message}`);
 				}

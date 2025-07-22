@@ -3,6 +3,7 @@ import TitlePage from "./pages/TitlePage";
 import RegisterPage from "./pages/RegisterPage";
 import StoragePage from "./pages/StoragePage";
 import LoginPage from "./pages/LoginPage";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
 
@@ -12,8 +13,11 @@ function App() {
         <Routes>
           <Route path="/" element={<TitlePage />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/home" element={<StoragePage />} />
           <Route path="/login" element={<LoginPage />} />
+
+          <Route element={<PrivateRoute />}>
+            <Route path="/users/:id/ingredients" element={<StoragePage />} />
+          </Route>
         </Routes>
       </Router>
     </>

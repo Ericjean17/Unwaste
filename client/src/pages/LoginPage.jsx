@@ -11,21 +11,28 @@ export default function LoginPage() {
 		
 		const handleLogin = async e => {
 			e.preventDefault();
-			const response = await fetch("http://localhost:3000/login", {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify(form)
-			})
+			try {
+				const response = await fetch("http://localhost:3000/login", {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify(form)
+				})
 
-			const data = await response.json();
+				const data = await response.json();
 
-			if (response.ok) {
-				//alert("Login successful");
-				alert(data.message);
-				window.location.href = "/home"
-				// redirect or store session/token
-			} else {
-				alert("Incorrect username or password");
+				if (response.ok) {
+					alert("Login successful");
+					localStorage.setItem("userId", data.userId); // save user id in localStorage
+					localStorage.setItem("token", data.token); // JWT is saved in browser across page refreshes
+					window.location.href = `users/${data.userId}/ingredients`
+					// navigate(`/users/${userId}/ingredients`);
+					
+					// redirect or store session/token
+				} else {
+					alert(data.message);
+				}
+			} catch (err) {
+				console.error(err.message);
 			}
 		}
 

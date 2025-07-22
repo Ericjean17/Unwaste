@@ -6,7 +6,7 @@ import IngredientCard from "../components/IngredientCard";
 const StoragePage = () => {
 	const [ingredient, setIngredient] = useState({
 		name: "", 
-		category: ""
+		category: "",
 	});
 
 	const handleChange = (e) => {
@@ -16,14 +16,35 @@ const StoragePage = () => {
 		}))
 	}
 
-	const handleSubmit = (e) => {
-	e.preventDefault();
+	const userId = localStorage.getItem("userId");
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		const token = localStorage.getItem("token");
 		if (ingredient.name === "" || ingredient.category === "") {
 			alert("Input missing for ingredient or category");
 			return;
 		}
+
+		try {
+			const response = await(`http://localhost:3000/users/${userId}/ingredients`, {
+			method: "POST",
+			headers: { 
+				"Content-Type": "application/json",
+				"Authorization": `Bearer ${token}`
+			},
+			body: JSON.stringify(ingredient)
+		});
+
+		const data = await response.json();
+		} catch (err) {
+			console.error(err.message);
+		}
 	}
 
+	const logout = () => {
+		localStorage.removeItem("token");
+		// then redirect to login page or set auth state to false
+	}
 	return (
 		<>
 			<Navbar />

@@ -22,7 +22,7 @@ const Navbar = () => {
 					</ul>
 				</nav>
 				{/* Hamburger icon */}
-				<button className="hamburger" onClick={toggleMenu}>
+				<button className={`hamburger ${menuOpen ? "open" : ""}`} onClick={toggleMenu}>
 					<span />
 					<span />
 					<span />
