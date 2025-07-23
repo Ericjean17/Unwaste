@@ -18,3 +18,20 @@
     border-radius: 4px;
     list-style: none;
 }
+
+.delete-btn {
+    background: transparent;
+    border: none;
+    font-weight: bold;
+}
+
+.delete-btn:hover {
+    background-color: rgb(228, 228, 228);
+    border-radius: 4px;
+    /* padding: 0.1rem; */
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+}

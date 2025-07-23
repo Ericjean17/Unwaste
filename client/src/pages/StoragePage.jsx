@@ -1,14 +1,55 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import "../css/StoragePage.css";
 import IngredientCard from "../components/IngredientCard";
+import { useNavigate } from "react-router-dom";
 
 const StoragePage = () => {
 	const [ingredient, setIngredient] = useState({
-		name: "", 
+		ingredient: "", 
 		category: "",
 	});
+	const [ingredients, setIngredients] = useState([]);
+	const navigate = useNavigate();
+	const [categorizedIngredients, setCategorizedIngredients] = useState({
+		Meat: [],
+		Vegetable: [],
+		Grain: [],
+		Fruit: [],
+		Dairy: [],
+		Beverage: [],
+		Nut: [],
+		Condiment: [],
+		Seafood: [],
+		Spice: [],
+		Sauce: [],
+		Sweetener: [],
+		Oil: [],
+		Legume: [],
+		Starch: [],
+		Other: []
+	});
 
+	
+	const fetchIngredients = async () => {
+		const userId = localStorage.getItem("userId");
+		const token = localStorage.getItem("token");
+
+		try {
+			const response = await fetch(`http://localhost:3000/users/${userId}/ingredients`, {
+				headers: {
+					"Authorization": `Bearer ${token}`
+				}
+			});
+			const data = await response.json(); // data becomes object[] containing { id, ingredient, category, user_id }
+			console.log(data);
+			setIngredients(data);
+		
+		} catch (err) {
+			console.error("Failed to fetch ingredents:", err.message);
+		}
+	}
+	
 	const handleChange = (e) => {
 		const { name, value } = e.target;
 		setIngredient((prevInput) => ({
@@ -16,17 +57,17 @@ const StoragePage = () => {
 		}))
 	}
 
-	const userId = localStorage.getItem("userId");
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+		const userId = localStorage.getItem("userId");
 		const token = localStorage.getItem("token");
-		if (ingredient.name === "" || ingredient.category === "") {
+		if (ingredient.ingredient === "" || ingredient.category === "") {
 			alert("Input missing for ingredient or category");
 			return;
 		}
 
 		try {
-			const response = await(`http://localhost:3000/users/${userId}/ingredients`, {
+			const response = await fetch(`http://localhost:3000/users/${userId}/ingredients`, {
 			method: "POST",
 			headers: { 
 				"Content-Type": "application/json",
@@ -34,8 +75,13 @@ const StoragePage = () => {
 			},
 			body: JSON.stringify(ingredient)
 		});
-
-		const data = await response.json();
+		//const data = await response.json();
+		if (response.ok) {
+			setIngredient({ ingredient: "", category: ingredient.category })
+			fetchIngredients();
+			//navigate(`/users/${userId}/ingredients`);
+		}
+		
 		} catch (err) {
 			console.error(err.message);
 		}
@@ -43,8 +89,54 @@ const StoragePage = () => {
 
 	const logout = () => {
 		localStorage.removeItem("token");
+		navigate("/login");
 		// then redirect to login page or set auth state to false
 	}
+
+	// Group ingredients by category (e.g., {Fruits: [...], Dairy: [...]}
+	const groupedIngredients = ingredients.reduce((accumulator, ingredient) => {
+		const category = ingredient.category;
+		if (!accumulator[category]) {
+			accumulator[category] = [];
+		}
+		accumulator[category].push(ingredient.ingredient);
+		return accumulator;
+	}, {})
+	
+	const handleDeleteIngredient = async (ingredient, category) => {
+		const userId = localStorage.getItem("userId");
+		const token = localStorage.getItem("token");
+
+		try {
+			const response = await fetch(`http://localhost:3000/users/${userId}/ingredients`, {
+				method: "DELETE",
+				headers: {
+					"Authorization": `Bearer ${token}`,
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify({ ingredient, category })
+			});
+			if (response.ok) {
+				// Remove from local state after deleting ingredient from database
+				//setIngredients(prevIngredients => prevIngredients.filter(item => !(item.ingredient === ingredient && item.category === category)));
+				setCategorizedIngredients((prev) => ({
+					...prev,
+					[category]: prev[category].filter((i) => i !== ingredient)
+      	}));
+				alert("Ingredient deleted");
+			} else {
+				console.error("Failed to delete ingredient");
+			}
+		} catch (err) {
+			console.error("Did not delete ingredient for some reason", err.message);
+		}
+	}
+
+	// Load ingredients from backend when user visits the ingredients page
+	useEffect(() => {
+		fetchIngredients();
+	}, [])
+	
 	return (
 		<>
 			<Navbar />
@@ -54,7 +146,7 @@ const StoragePage = () => {
 					<div className="input-container">
 						<div className="category-add">
 							<form className="ingredient-form" onSubmit={handleSubmit}>
-								<input className="ingredient-add" type="text" placeholder="Add Ingredient" value={ingredient.name} onChange={handleChange} name="name"/>
+								<input className="ingredient-add" type="text" placeholder="Add Ingredient" value={ingredient.ingredient} onChange={handleChange} name="ingredient"/>
 								<div className="categories">
 									<select className="dropdown" name="category" id="category" onChange={handleChange}>
 										<option value="">Select category</option>
@@ -81,22 +173,14 @@ const StoragePage = () => {
 						</div>
 					</div>
 					<div className="cards">
-						<IngredientCard category="Vegetables" ingredients={["Broccoli", "Choi"]}/>
-						<IngredientCard category="Fruits" ingredients={["Broccoli", "Choi"]}/>
-						<IngredientCard category="Meat" ingredients={["Broccoli", "Choi"]}/>
-						<IngredientCard category="Seafood" ingredients={["Broccoli", "Choi"]}/>
-						<IngredientCard category="Dairy" ingredients={["Broccoli", "Choi"]}/>
-						<IngredientCard category="Grains" ingredients={["Broccoli", "Choi"]}/>
-						<IngredientCard category="Baking" ingredients={["Broccoli", "Choi"]}/>
-						<IngredientCard category="Oils & Fats" ingredients={["Broccoli", "Choi"]}/>
-						<IngredientCard category="Spices & Herbs" ingredients={["Broccoli", "Choi"]}/>
-						<IngredientCard category="Condiments" ingredients={["Broccoli", "Choi"]}/>
-						<IngredientCard category="Beverages" ingredients={["Broccoli", "Choi"]}/>
-						<IngredientCard category="Canned Goods" ingredients={["Broccoli", "Choi"]}/>
-						<IngredientCard category="Frozen Foods" ingredients={["Broccoli", "Choi"]}/>
-						<IngredientCard category="Snacks" ingredients={["Broccoli", "Choi"]}/>
-						<IngredientCard category="Legumes" ingredients={["Broccoli", "Choi"]}/>
-						<IngredientCard category="Miscellaneous" ingredients={["Broccoli", "Choi"]}/>
+						{Object.entries(groupedIngredients).map(([category, ingredient]) => (
+							<IngredientCard
+								key={category}
+								category={category}
+								ingredients={ingredient}
+								handleDelete={handleDeleteIngredient}
+							/>
+						))}
 					</div>
 				</div>
 			</section>

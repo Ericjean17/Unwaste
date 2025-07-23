@@ -48,8 +48,6 @@ app.post("/register", async (req, res) => {
         
         res.json(newUser.rows[0]);
         //res.status(201).json(newUser.rows);
-        
-    
     } catch (err) {
         console.error(err.message);
     }
@@ -65,7 +63,7 @@ app.post("/login", async (req, res) => {
             return res.status(401).json({ message: "Invalid username or password" })
         }
         
-        const user = userQuery.rows[0]; // Stores unique username and it's password
+        const user = userQuery.rows[0]; // Stores their id number, unique username and password
         
         // Check if user inputted password matches the hashed password as well
         const validPassword = await bcrypt.compare(password, user.password_hash);
@@ -79,25 +77,57 @@ app.post("/login", async (req, res) => {
             process.env.JWT_SECRET, // used to sign token to verify it later
             { expiresIn: "1h" }
         );
-
         res.json({ token, message: "Login successful", userId: user.id})
     } catch (err) {
         console.error(err.message);
     }
 })
 
+// Return all ingredients to the authenticated user
+app.get("/users/:id/ingredients", authenticateToken, async (req, res) => {
+    const { userId } = req.user;
+
+    try {
+        const result = await pool.query("SELECT * FROM ingredients WHERE user_id = $1", [userId]);
+        res.json(result.rows); // Array of { id, ingredients, category, user_id }
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({ message: "Failed to fetch ingredients" })
+    }
+})
+
 app.post("/users/:id/ingredients", authenticateToken, async (req, res) => {
     //const { userId } = req.params;
     const { userId } = req.user;
-    const { name, category } = req.body;
+    const { ingredient, category } = req.body;
 
     try {
         const newIngredient = await pool.query("INSERT INTO ingredients (ingredient, category, user_id) VALUES ($1, $2, $3) RETURNING *",
-            [name, category, userId]
+            [ingredient, category, userId]
         );
         res.json(newIngredient.rows[0]);
     } catch (err) {
         console.error(err.message);
+    }
+})
+
+// Delete an ingredient
+app.delete("/users/:id/ingredients", authenticateToken, async (req, res) => {
+    const { userId } = req.user;
+    const { ingredient, category } = req.body;
+    
+    try {
+        const deleteIngredient = await pool.query("DELETE FROM ingredients WHERE user_id = $1 AND ingredient = $2 AND category = $3 RETURNING *",
+            [userId, ingredient, category]
+        );
+
+        if (deleteIngredient.rows === 0) { // deleteIngredient.rowCount === 0
+            return res.status(404).json({ message: "Ingredient not found" });
+        }
+
+        res.json({ message: "Ingredient deleted", deleted: result.rows[0] });
+    } catch (err) {
+        console.log(err.message);
     }
 })
 
