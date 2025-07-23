@@ -121,11 +121,11 @@ app.delete("/users/:id/ingredients", authenticateToken, async (req, res) => {
             [userId, ingredient, category]
         );
 
-        if (deleteIngredient.rows === 0) { // deleteIngredient.rowCount === 0
+        if (deleteIngredient.rowCount === 0) { // rows = [] containing rows returning by query, rowCount = num indicating how many rows were affected
             return res.status(404).json({ message: "Ingredient not found" });
         }
 
-        res.json({ message: "Ingredient deleted", deleted: result.rows[0] });
+        res.json({ message: "Ingredient deleted", deleted: deleteIngredient.rows[0].ingredient });
     } catch (err) {
         console.log(err.message);
     }

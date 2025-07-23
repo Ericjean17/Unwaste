@@ -5,6 +5,7 @@ import IngredientCard from "../components/IngredientCard";
 import { useNavigate } from "react-router-dom";
 
 const StoragePage = () => {
+  // Tracks the ingredient and category that the user wants to input
 	const [ingredient, setIngredient] = useState({
 		ingredient: "", 
 		category: "",
@@ -30,7 +31,7 @@ const StoragePage = () => {
 		Other: []
 	});
 
-	
+	// Get request for displaying all the user's ingredients
 	const fetchIngredients = async () => {
 		const userId = localStorage.getItem("userId");
 		const token = localStorage.getItem("token");
@@ -42,7 +43,6 @@ const StoragePage = () => {
 				}
 			});
 			const data = await response.json(); // data becomes object[] containing { id, ingredient, category, user_id }
-			console.log(data);
 			setIngredients(data);
 		
 		} catch (err) {
@@ -50,6 +50,7 @@ const StoragePage = () => {
 		}
 	}
 	
+  // Updates the ingredient or category value when it changes
 	const handleChange = (e) => {
 		const { name, value } = e.target;
 		setIngredient((prevInput) => ({
@@ -57,6 +58,7 @@ const StoragePage = () => {
 		}))
 	}
 
+  // POST request for entering an ingredient with a category
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		const userId = localStorage.getItem("userId");
@@ -75,25 +77,26 @@ const StoragePage = () => {
 			},
 			body: JSON.stringify(ingredient)
 		});
-		//const data = await response.json();
-		if (response.ok) {
+		
+    // If the response is successful, then clear the input but leave the category the same.
+    // Then, update the card that contains the new ingredient by sending a GET request
+    if (response.ok) {
 			setIngredient({ ingredient: "", category: ingredient.category })
 			fetchIngredients();
 			//navigate(`/users/${userId}/ingredients`);
 		}
-		
 		} catch (err) {
 			console.error(err.message);
 		}
 	}
 
+  // Logout of the account by removing the token and sending them back to the login screen
 	const logout = () => {
 		localStorage.removeItem("token");
 		navigate("/login");
-		// then redirect to login page or set auth state to false
 	}
 
-	// Group ingredients by category (e.g., {Fruits: [...], Dairy: [...]}
+	// Group ingredients by category in the form of (e.g., {Fruits: [...], Dairy: [...]}
 	const groupedIngredients = ingredients.reduce((accumulator, ingredient) => {
 		const category = ingredient.category;
 		if (!accumulator[category]) {
@@ -103,6 +106,7 @@ const StoragePage = () => {
 		return accumulator;
 	}, {})
 	
+  // DELETE request is sent when a user wants to delete an ingredient in a card
 	const handleDeleteIngredient = async (ingredient, category) => {
 		const userId = localStorage.getItem("userId");
 		const token = localStorage.getItem("token");
@@ -114,16 +118,13 @@ const StoragePage = () => {
 					"Authorization": `Bearer ${token}`,
 					"Content-Type": "application/json"
 				},
-				body: JSON.stringify({ ingredient, category })
+				body: JSON.stringify({ ingredient: ingredient, category: category })
 			});
+      const data = await response.json();
+      // Remove from local state after deleting ingredient from database
 			if (response.ok) {
-				// Remove from local state after deleting ingredient from database
-				//setIngredients(prevIngredients => prevIngredients.filter(item => !(item.ingredient === ingredient && item.category === category)));
-				setCategorizedIngredients((prev) => ({
-					...prev,
-					[category]: prev[category].filter((i) => i !== ingredient)
-      	}));
-				alert("Ingredient deleted");
+        alert(`Ingredient deleted: ${data.deleted}`);
+				setIngredients(prevIngredients => prevIngredients.filter(item => !(item.ingredient === ingredient && item.category === category)));
 			} else {
 				console.error("Failed to delete ingredient");
 			}
@@ -132,7 +133,7 @@ const StoragePage = () => {
 		}
 	}
 
-	// Load ingredients from backend when user visits the ingredients page
+	// Load ingredients from backend when user first visits the ingredients page
 	useEffect(() => {
 		fetchIngredients();
 	}, [])
