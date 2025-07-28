@@ -5,13 +5,13 @@ import IngredientCard from "../components/IngredientCard";
 import { useNavigate } from "react-router-dom";
 
 const StoragePage = () => {
-  // Tracks the ingredient and category that the user wants to input
+  // Tracks the ingredient and category value that the user wants to input
 	const [ingredient, setIngredient] = useState({
 		ingredient: "", 
 		category: "",
 	});
-	const [ingredients, setIngredients] = useState([]);
-	const navigate = useNavigate();
+	const [ingredients, setIngredients] = useState([]); // Tracks all ingredients
+	const navigate = useNavigate(); // Allows the user to be redirected to different URLs
 	const [categorizedIngredients, setCategorizedIngredients] = useState({
 		Meat: [],
 		Vegetable: [],
@@ -31,7 +31,7 @@ const StoragePage = () => {
 		Other: []
 	});
 
-	// Get request for displaying all the user's ingredients
+	// GET request for displaying all the user's ingredients
 	const fetchIngredients = async () => {
 		const userId = localStorage.getItem("userId");
 		const token = localStorage.getItem("token");
@@ -39,7 +39,7 @@ const StoragePage = () => {
 		try {
 			const response = await fetch(`http://localhost:3000/users/${userId}/ingredients`, {
 				headers: {
-					"Authorization": `Bearer ${token}`
+					"Authorization": `Bearer ${token}` // Makes sure that the user can only send REST api if they have a token
 				}
 			});
 			const data = await response.json(); // data becomes object[] containing { id, ingredient, category, user_id }
@@ -47,10 +47,11 @@ const StoragePage = () => {
 		
 		} catch (err) {
 			console.error("Failed to fetch ingredents:", err.message);
+      navigate("/login"); // Goes to login page if they don't have a token
 		}
 	}
 	
-  // Updates the ingredient or category value when it changes
+  // Updates the ingredient and/or category value when it changes
 	const handleChange = (e) => {
 		const { name, value } = e.target;
 		setIngredient((prevInput) => ({
@@ -81,12 +82,13 @@ const StoragePage = () => {
     // If the response is successful, then clear the input but leave the category the same.
     // Then, update the card that contains the new ingredient by sending a GET request
     if (response.ok) {
-			setIngredient({ ingredient: "", category: ingredient.category })
+			setIngredient({ ingredient: "", category: ingredient.category }) // the category stays the same after a user inputs an ingredient
 			fetchIngredients();
 			//navigate(`/users/${userId}/ingredients`);
 		}
 		} catch (err) {
 			console.error(err.message);
+      navigate("/login");
 		}
 	}
 
@@ -98,6 +100,8 @@ const StoragePage = () => {
 
 	// Group ingredients by category in the form of (e.g., {Fruits: [...], Dairy: [...]}
 	const groupedIngredients = ingredients.reduce((accumulator, ingredient) => {
+    // Get the category of the ingredient, if it is not in the accumulator, add the category as a key
+    // and initialize it to an empty list of ingredients. Push the ingredient to it's own category
 		const category = ingredient.category;
 		if (!accumulator[category]) {
 			accumulator[category] = [];
@@ -118,18 +122,22 @@ const StoragePage = () => {
 					"Authorization": `Bearer ${token}`,
 					"Content-Type": "application/json"
 				},
-				body: JSON.stringify({ ingredient: ingredient, category: category })
+				body: JSON.stringify({ ingredient: ingredient, category: category }) // the ingredient and category to delete
 			});
       const data = await response.json();
+      
       // Remove from local state after deleting ingredient from database
 			if (response.ok) {
-        alert(`Ingredient deleted: ${data.deleted}`);
+        alert(`Ingredient deleted: ${data.deleted}`); // CONSIDER MAKING THIS A DIFFERENT POPUP AT BOTTOM OF SCREEN
+
+        // Display all current ingredients where the one that should be deleted isn't shown
 				setIngredients(prevIngredients => prevIngredients.filter(item => !(item.ingredient === ingredient && item.category === category)));
 			} else {
 				console.error("Failed to delete ingredient");
 			}
 		} catch (err) {
 			console.error("Did not delete ingredient for some reason", err.message);
+      navigate("/login");
 		}
 	}
 
@@ -151,22 +159,22 @@ const StoragePage = () => {
 								<div className="categories">
 									<select className="dropdown" name="category" id="category" onChange={handleChange}>
 										<option value="">Select category</option>
-										<option value="vegetables">Vegetables</option>
-										<option value="fruits">Fruits</option>
-										<option value="meat">Meat</option>
-										<option value="seafood">Seafood</option>
-										<option value="dairy">Dairy</option>
-										<option value="grains">Grains</option>
-										<option value="baking">Baking</option>
-										<option value="oils">Oils & Fats</option>
-										<option value="spices">Spices & Herbs</option>
-										<option value="condiments">Condiments</option>
-										<option value="beverages">Beverages</option>
-										<option value="canned">Canned Goods</option>
-										<option value="frozen">Frozen Foods</option>
-										<option value="snacks">Snacks</option>
-										<option value="nuts">Legumes</option>
-										<option value="misc">Miscellaneous</option>
+										<option value="Vegetables">Vegetables</option>
+										<option value="Fruits">Fruits</option>
+										<option value="Meat">Meat</option>
+										<option value="Seafood">Seafood</option>
+										<option value="Dairy">Dairy</option>
+										<option value="Grains">Grains</option>
+										<option value="Baking">Baking</option>
+										<option value="Oils">Oils & Fats</option>
+										<option value="Spices">Spices & Herbs</option>
+										<option value="Condiments">Condiments</option>
+										<option value="Beverages">Beverages</option>
+										<option value="Canned">Canned Goods</option>
+										<option value="Frozen">Frozen Foods</option>
+										<option value="Snacks">Snacks</option>
+										<option value="Nuts">Legumes</option>
+										<option value="Miscellaneous">Miscellaneous</option>
 									</select>
 									<button className="ingredient-submit" type="submit">Add</button>
 								</div>

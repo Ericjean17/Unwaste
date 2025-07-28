@@ -7,8 +7,8 @@ const Input = ({ label, name, type, id, value, onChange }) => {
     <div className="user-input">
       <div className="user-input-container">
         <label htmlFor={id}>
-          {label}{" "}
-          {showAsterisk && <span style={{ color: "red" }}>*</span>}
+          {label}{" "} {/*{" "} is just a space */}
+          {showAsterisk && <span style={{ color: "red" }}>*</span>} {/*Show the red asterisk when input is empty */}
         </label>
         <input 
           type={type} 

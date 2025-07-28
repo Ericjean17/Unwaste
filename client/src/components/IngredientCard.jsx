@@ -10,6 +10,7 @@ const IngredientCard = ({ category, ingredients, handleDelete }) => {
 						{ingredients.map((ingredient, i) => 
 							<li key={i} className="row">
 								{ingredient}
+								{/* prop handleDelete has 2 parameters in the parent (ingredient and category) */}
 								<button className="delete-btn" onClick={() => handleDelete(ingredient, category)}>
 									✕
 								</button>
