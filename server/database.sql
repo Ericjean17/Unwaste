@@ -3,7 +3,12 @@ CREATE DATABASE unwaste;
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(100) UNIQUE NOT NULL,
-    password_hash TEXT NOT NULL
+    hashed_password TEXT NOT NULL,
+    pref_meats VARCHAR(20),
+    pref_fish VARCHAR(20),
+    pref_veggies VARCHAR(20),
+    pref_spicy VARCHAR(20),
+    allergies TEXT[]
 );
 
 CREATE TABLE ingredients (

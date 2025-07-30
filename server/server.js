@@ -28,7 +28,7 @@ function authenticateToken(req, res, next) {
     } catch (err) {
         res.sendStatus(403).json({ message: "Invalid token, please login again" }); // Invalid token
     }
-}
+};
 
 app.post("/register", async (req, res) => {
     const { username, password } = req.body;
@@ -44,14 +44,14 @@ app.post("/register", async (req, res) => {
         const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-        const newUser = await pool.query("INSERT INTO users (username, password_hash) VALUES ($1, $2) RETURNING *", [username, hashedPassword]);
+        const newUser = await pool.query("INSERT INTO users (username, hashed_password) VALUES ($1, $2) RETURNING *", [username, hashedPassword]);
         
         res.json(newUser.rows[0]);
         //res.status(201).json(newUser.rows);
     } catch (err) {
         console.error(err.message);
     }
-})
+});
 
 app.post("/login", async (req, res) => {
     const { username, password } = req.body;
@@ -66,7 +66,7 @@ app.post("/login", async (req, res) => {
         const user = userQuery.rows[0]; // Stores their id number, unique username and password
         
         // Check if user inputted password matches the hashed password as well
-        const validPassword = await bcrypt.compare(password, user.password_hash);
+        const validPassword = await bcrypt.compare(password, user.hashed_password);
         if (!validPassword) {
             return res.status(401).json({ message: "Invalid username or password" })
         }
@@ -81,7 +81,7 @@ app.post("/login", async (req, res) => {
     } catch (err) {
         console.error(err.message);
     }
-})
+});
 
 // Return all ingredients to the authenticated user
 app.get("/users/:id/ingredients", authenticateToken, async (req, res) => {
@@ -94,7 +94,7 @@ app.get("/users/:id/ingredients", authenticateToken, async (req, res) => {
         console.error(err.message);
         res.status(500).json({ message: "Failed to fetch ingredients" })
     }
-})
+});
 
 app.post("/users/:id/ingredients", authenticateToken, async (req, res) => {
     //const { userId } = req.params;
@@ -109,7 +109,7 @@ app.post("/users/:id/ingredients", authenticateToken, async (req, res) => {
     } catch (err) {
         console.error(err.message);
     }
-})
+});
 
 // Delete an ingredient
 app.delete("/users/:id/ingredients", authenticateToken, async (req, res) => {
@@ -129,7 +129,46 @@ app.delete("/users/:id/ingredients", authenticateToken, async (req, res) => {
     } catch (err) {
         console.log(err.message);
     }
+});
+
+app.get("/users/:id/recipes", authenticateToken, async (req, res) => {
+    const { id } = req.params;
+
+    const result = await pool.query(
+        `SELECT *
+        FROM users WHERE id = $1`,
+        [id]
+    );
+    const { pref_meats, pref_fish, pref_veggies, pref_spicy } = result.rows[0];
+    const isSet = pref_meats && pref_fish && pref_veggies && pref_spicy;
+
+    if (!isSet) {
+        return res.status(403).json({ error: "Please set your diet preferences first" });
+    }
+    res.json({ message: "Diet set" });
+
 })
+
+app.put("/users/:id/diet", authenticateToken, async (req, res) => {
+    const { id } = req.params;
+    const { meatConsumption, fishConsumption, vegetableConsumption, spicinessLevel, allergies } = req.body;
+    try {
+        const updateDiet = await pool.query(
+            `UPDATE users 
+            SET pref_meats = $1,
+                pref_fish = $2,
+                pref_veggies = $3,
+                pref_spicy = $4,
+                allergies = $5
+            WHERE id = $6
+            RETURNING *`,
+            [meatConsumption, fishConsumption, vegetableConsumption, spicinessLevel, allergies, id]
+        );
+        res.status(200).json(updateDiet.rows[0]);
+    } catch (err) {
+        console.error(err.message);
+    }
+});
 
 app.listen(3000, () => {
     console.log("listening on port 3000");

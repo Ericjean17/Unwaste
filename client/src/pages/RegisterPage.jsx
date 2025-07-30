@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../css/RegisterPage.css";
 import Header from "../components/Header";
 import Input from "../components/Input";
@@ -8,6 +9,7 @@ export default function RegisterPage() {
 			username: "", 
 			password: ""
 		});
+		const navigate = useNavigate();
 		
 		const handleSubmit = async e => {
 			e.preventDefault();
@@ -27,7 +29,8 @@ export default function RegisterPage() {
 
 				if (response.ok) {
 					console.log("User registered", data);
-					window.location.href = "/login";
+					alert(`Welcome: ${data.username} with id: ${data.id}`);
+					navigate(`/login`);
 				} else {
 					alert(`Registration failed: ${data.message}`);
 				}

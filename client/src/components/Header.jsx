@@ -2,9 +2,9 @@ import { useState } from "react";
 import "../css/Header.css";
 
 const Header = () => {
-	const toggleMenu = () => {
-		setShowMenuIcon(!setShowMenuIcon);
-	}
+	// const toggleMenu = () => {
+	// 	setShowMenuIcon(!setShowMenuIcon);
+	// }
 
 	return (
 		<header id='header' className='primary-header text-font'>
