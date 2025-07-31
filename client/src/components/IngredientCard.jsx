@@ -1,3 +1,4 @@
+import { useState } from "react";
 import "../css/IngredientCard.css";
 
 const IngredientCard = ({ category, ingredients, handleDelete }) => {

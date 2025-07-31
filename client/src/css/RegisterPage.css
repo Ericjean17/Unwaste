@@ -16,9 +16,11 @@
     overflow-y: auto;
 }
 
-h2 {
+.info h2 {
     text-align: center;
     padding-bottom: 10px;
+    font-weight: 700;
+    font-size: 1.5rem;
 }
 
 .form {
@@ -55,4 +57,11 @@ h2 {
     font-size: 1rem;
     width: 100%;
     max-width: 211px;
+    background-color: #44b840;
+    color: rgb(248, 248, 248);
+}
+
+.register-button button:hover {
+    background-color: #45ad42;
+    transition: background-color 0.3s;
 }

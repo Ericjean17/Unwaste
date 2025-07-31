@@ -155,7 +155,7 @@ const StoragePage = () => {
 					<div className="input-container">
 						<div className="category-add">
 							<form className="ingredient-form" onSubmit={handleSubmit}>
-								<input className="ingredient-add" type="text" placeholder="Add Ingredient" value={ingredient.ingredient} onChange={handleChange} name="ingredient"/>
+								<input className="ingredient-add" type="text" placeholder="Add ingredient" value={ingredient.ingredient} onChange={handleChange} name="ingredient"/>
 								<div className="categories">
 									<select className="dropdown" name="category" id="category" onChange={handleChange}>
 										<option value="">Select category</option>
@@ -166,7 +166,7 @@ const StoragePage = () => {
 										<option value="Dairy">Dairy</option>
 										<option value="Grains">Grains</option>
 										<option value="Baking">Baking</option>
-										<option value="Oils">Oils & Fats</option>
+										<option value="Oils & Fats">Oils & Fats</option>
 										<option value="Spices">Spices & Herbs</option>
 										<option value="Condiments">Condiments</option>
 										<option value="Beverages">Beverages</option>

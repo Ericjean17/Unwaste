@@ -8,6 +8,7 @@ const DietPage = () => {
   const [allergy, setAllergy] = useState("");
   //const [allergies, setAllergies] = useState([]);
   const [diet, setDiet] = useState({
+    // veganType: "",
     meatConsumption: "",
     fishConsumption: "",
     vegetableConsumption: "",
@@ -80,14 +81,29 @@ const DietPage = () => {
           <button onClick={handleAdd}>Add</button>
         </div>
         <div className="allergies">
-          {/* {allergies && allergies.map((allergy, i) => (
-            <Allergy allergy={allergy} handleDelete={handleDelete} key={i}/>
-          ))} */}
-          {diet.allergies && diet.allergies.map((allergy, i) => (
-            <Allergy allergy={allergy} handleDelete={handleDelete} key={i}/>
-          ))}
+          {diet.allergies && diet.allergies.length > 0 ? (
+            diet.allergies.map((allergy, i) => (
+              <Allergy allergy={allergy} handleDelete={handleDelete} key={i} />
+            ))
+          ) : (
+            <p>No allergies added</p>
+          )}
         </div>
         
+        {/* <div className="radio-group">
+          <p>Vegan Options (optional)</p>
+          <input type="radio" id="vegan0" name="veganType" value="Strict" checked={diet.veganType === "Strict"} onChange={handleRadioChange} required/>
+          <label htmlFor="meat0">Never</label>
+          <input type="radio" id="vegan1" name="veganType" value="Lacto" checked={diet.veganType === "Lacto"} onChange={handleRadioChange}/>
+          <label htmlFor="meat1">Rarely</label>
+          <input type="radio" id="vegan2" name="veganType" value="Ovo" checked={diet.veganType === "OccOvosionally"} onChange={handleRadioChange}/>
+          <label htmlFor="meat2">Occasionally</label>
+          <input type="radio" id="vegan3" name="veganType" value="Pescatarian" checked={diet.veganType === "Pescatarian"} onChange={handleRadioChange}/>
+          <label htmlFor="meat3">Frequently</label>
+          <input type="radio" id="vegan4" name="veganType" value="Flexitarian" checked={diet.veganType === "Flexitarian"} onChange={handleRadioChange}/>
+          <label htmlFor="meat4">Daily</label>
+        </div> */}
+
         <div className="radio-group">
           <p>Meat Consumption {!diet.meatConsumption && <span style={{color: "red"}}>*</span>}</p>
           {/* For the radio group to be required, they must all have the same name value and have one input be required */}

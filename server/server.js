@@ -75,7 +75,7 @@ app.post("/login", async (req, res) => {
         const token = jwt.sign(
             { userId: user.id }, // payload (info to include in token)
             process.env.JWT_SECRET, // used to sign token to verify it later
-            { expiresIn: "3h" }
+            { expiresIn: "1h" }
         );
         res.json({ token, message: "Login successful", userId: user.id})
     } catch (err) {

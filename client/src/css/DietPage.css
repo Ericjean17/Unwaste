@@ -75,6 +75,12 @@ input[type="radio"]:checked {
   flex-wrap: wrap;
 }
 
+.allergies > p {
+  padding: 0.5rem;
+  color: hsl(0.00,0.00%,61.96%);
+  font-weight: bold;
+}
+
 @media screen and (min-width: 501px) {
   .diet-container {
     margin-top: 12rem;
