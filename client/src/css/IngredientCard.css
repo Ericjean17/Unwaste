@@ -19,19 +19,36 @@
     list-style: none;
 }
 
-.delete-btn {
-    background: transparent;
-    border: none;
-    font-weight: bold;
-}
-
 .delete-btn:hover {
     background-color: rgb(228, 228, 228);
     border-radius: 4px;
     /* padding: 0.1rem; */
 }
 
-.row {
+.ingredient-row {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    border-style: border-box;
 }
+
+.edit-btn, .delete-btn {
+    background: transparent;
+    border: none;
+}
+
+.input-btns {
+    display: flex;
+    flex-shrink: 0;
+}
+.delete-btn:hover, .edit-btn:hover {
+    background-color: #e0e0e0;
+    border-radius: 50px;
+}
+
+.input-ingredient {
+    width: 80%;
+    flex: 1;
+}
+
