@@ -22,7 +22,7 @@ const Navbar = () => {
 	return (
 		<header id="navbar">
 			<div className="navbar-container primary-header text-font">
-				<a href="/recipes" className='fs-500 text-neutral-900 fw-bold'>Unwaste</a>
+				<a href="/recipes" className='fs-500 text-neutral-900 app-name'>Unwaste</a>
 				<nav>
 					<ul className={`nav-items ${menuOpen ? "open" : ""}` }>
 						<li>

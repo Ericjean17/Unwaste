@@ -8,7 +8,8 @@
 
 .category {
     text-align: center;
-    margin-bottom: 0.5rem;
+    font-size: 1.25rem;
+    font-weight: 700;
 }
 
 .ingredients li {
@@ -17,6 +18,7 @@
     padding: 0.5rem;
     border-radius: 4px;
     list-style: none;
+    font-weight: 500;
 }
 
 .delete-btn:hover {
@@ -36,6 +38,10 @@
 .ingredient-row > span {
     flex: 1;
     min-width: 0;
+}
+
+.ingredient-row:last-child {
+    margin-bottom: 0;
 }
 
 .edit-btn, .delete-btn {
@@ -83,5 +89,41 @@
     color: white;
     border-radius: 50px;
 }
+
+.category-header {
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    /* justify-content: space-between; */
+    margin-top: 0.25rem;
+    margin-bottom: 0.75rem;
+    transition: background-color 0.2s ease;
+}
+.left {
+    flex: 1;
+}
+
+.right {
+    display: flex;
+    justify-content: flex-end;
+    flex: 1;
+
+}
+
+.expand-icon {
+    font-size: 0.875rem;
+    color: #666;
+}
+
+.category-content {
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+    overflow: hidden;
+    opacity: 1;
+}
+
+.category-content.collapsed {
+    max-height: 0;
+}
+
 
 

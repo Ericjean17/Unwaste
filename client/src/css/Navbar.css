@@ -3,13 +3,18 @@ body {
   overflow-x: hidden 
 }
 
+.app-name {
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
 /* Hamburger icon base style (hidden on large screens) */
 .hamburger {
   display: none; /* Hidden on larger screens by default */
   flex-direction: column;
   justify-content: space-between;
   width: 24px;
-  height: 17px;
+  height: 18px;
   background: none;
   border: none;
   padding: 0;
@@ -24,14 +29,6 @@ body {
   border-radius: 2px;
 }
 
-#navbar {
-    /* border-bottom: 1px solid rgb(212, 212, 212); */
-    /* background-color: rgb(252, 252, 252); */
-    
-    /* display: flex;
-    align-items: center; */
-}
-
 .navbar-container {
     display: flex;
     justify-content: space-between;
@@ -42,11 +39,6 @@ body {
     margin: 0 auto;
 }
 
-.navbar-container>a {
-  /* font-weight: 700; */
-  font-weight: 800;
-  font-size: 1.5rem;
-}
 .nav-items {
     display: flex;
     align-items: center;
@@ -68,9 +60,15 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0.25rem 0.75rem;
-  font-size: 0.845rem;
-  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.material-symbols-outlined {
+  font-size: 1rem;
+  margin-right: 4px;
 }
 
 /* Mobile styles */
