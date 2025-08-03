@@ -27,20 +27,27 @@
 
 .ingredient-row {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
     width: 100%;
-    border-style: border-box;
+    gap: 0.5rem;
+}
+
+.ingredient-row > span {
+    flex: 1;
+    min-width: 0;
 }
 
 .edit-btn, .delete-btn {
     background: transparent;
     border: none;
+    box-sizing: border-box;
 }
 
 .input-btns {
     display: flex;
     flex-shrink: 0;
+    gap: 0.25rem;
 }
 .delete-btn:hover, .edit-btn:hover {
     background-color: #e0e0e0;
@@ -48,7 +55,33 @@
 }
 
 .input-ingredient {
-    width: 80%;
-    flex: 1;
+    width: 100%;
+    box-sizing: border-box;
 }
+
+.ingredient-text {
+    display: block;
+    width: 100%;
+    padding: 0.25rem;
+    border: 1px solid transparent;
+    background: transparent;
+}
+
+.save-btn, .cancel-btn {
+    background: transparent;
+    border: none;
+}
+
+.save-btn:hover {
+    color: white;
+    border-radius: 50px;
+    background-color: #4caf50;
+}
+
+.cancel-btn:hover {
+    background-color: #f44336;
+    color: white;
+    border-radius: 50px;
+}
+
 

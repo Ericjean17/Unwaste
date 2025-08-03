@@ -75,7 +75,7 @@ app.post("/login", async (req, res) => {
         const token = jwt.sign(
             { userId: user.id }, // payload (info to include in token)
             process.env.JWT_SECRET, // used to sign token to verify it later
-            { expiresIn: "1h" }
+            { expiresIn: "4h" }
         );
         res.json({ token, message: "Login successful", userId: user.id})
     } catch (err) {
@@ -170,6 +170,21 @@ app.put("/users/:id/diet", authenticateToken, async (req, res) => {
     }
 });
 
+app.put("/users/:id/ingredients", authenticateToken, async (req, res) => {
+    const { id } = req.params;
+    const { oldIngredient, newIngredient, category } = req.body;
+
+    try {
+        const updateIngredient = await pool.query("UPDATE ingredients SET ingredient = $1 WHERE user_id = $2 AND ingredient = $3 AND category = $4 RETURNING *",
+            [newIngredient, id, oldIngredient, category]
+        )
+        res.status(200).json(updateIngredient.rows[0]);
+
+    } catch (err) {
+        console.error(err.message);
+    }
+
+})
 app.listen(3000, () => {
     console.log("listening on port 3000");
 });

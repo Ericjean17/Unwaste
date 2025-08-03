@@ -32,7 +32,7 @@ const Navbar = () => {
 						<li><a href={`/users/${userId}/diet`} className="text-accent-100 text-font fw-bold">Diet</a></li>
 						<li>
 							<a href={`/users/login`} className="logout" onClick={handleLogout}>
-								<span class="material-symbols-outlined">logout</span><span>Logout</span>
+								<span className="material-symbols-outlined">logout</span><span>Logout</span>
 							</a>
 						</li>
 					</ul>

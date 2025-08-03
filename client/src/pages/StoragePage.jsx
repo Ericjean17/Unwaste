@@ -12,24 +12,6 @@ const StoragePage = () => {
 	});
 	const [ingredients, setIngredients] = useState([]); // Tracks all ingredients
 	const navigate = useNavigate(); // Allows the user to be redirected to different URLs
-	const [categorizedIngredients, setCategorizedIngredients] = useState({
-		Meat: [],
-		Vegetable: [],
-		Grain: [],
-		Fruit: [],
-		Dairy: [],
-		Beverage: [],
-		Nut: [],
-		Condiment: [],
-		Seafood: [],
-		Spice: [],
-		Sauce: [],
-		Sweetener: [],
-		Oil: [],
-		Legume: [],
-		Starch: [],
-		Other: []
-	});
 
 	// GET request for displaying all the user's ingredients
 	const fetchIngredients = async () => {
@@ -141,6 +123,53 @@ const StoragePage = () => {
 		}
 	}
 
+	// UPDATE request is sent when user wants to update an ingredient in a card
+	const handleUpdateIngredient = async (index, newIngredient, category) => {
+		const userId = localStorage.getItem("userId");
+		const token = localStorage.getItem("token");
+
+		// Find old ingredient value in the group ingredients function
+		const categoryIngredients = groupedIngredients[category] || [];
+		const oldIngredient = categoryIngredients[index];
+
+		if (oldIngredient === newIngredient) {
+			alert("It's the same ingredient dummy");
+			return;
+		}
+		
+		try {
+			const response = await fetch(`http://localhost:3000/users/${userId}/ingredients`, {
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+					"Authorization": `Bearer ${token}`
+				},
+				body: JSON.stringify({
+					oldIngredient: oldIngredient,
+					newIngredient: newIngredient,
+					category: category
+				})
+			});
+
+			if (response.ok) {
+				const data = response.json();
+				// For all ingredients, if the curr matches the only ingredient, then switch it's value to new ingredient
+				setIngredients(prevIngredients => prevIngredients.map(item =>
+					item.ingredient === oldIngredient && item.category === category 
+						? {...item, ingredient: newIngredient }
+						: item
+					)
+				)
+				alert(`Edited ingredient ${oldIngredient} to ${newIngredient}`)
+			} else {
+				console.error("Failed to update ingredient");
+			}
+		} catch (err) {
+			console.error("Did not update ingredient", err.message);
+			navigate("/login");
+		}
+	}
+
 	// Load ingredients from backend when user first visits the ingredients page
 	useEffect(() => {
 		fetchIngredients();
@@ -154,7 +183,7 @@ const StoragePage = () => {
 					<h3>My Ingredients</h3>	
 					<div className="input-container">
 						<div className="category-add">
-							<form className="ingredient-form" onSubmit={handleSubmit}>
+							<form className="ingredient-form" onSubmit={handleSubmit} name="ingredient-form">
 								<input className="ingredient-add" type="text" placeholder="Add ingredient" value={ingredient.ingredient} onChange={handleChange} name="ingredient"/>
 								<div className="categories">
 									<select className="dropdown" name="category" id="category" onChange={handleChange}>
@@ -188,6 +217,7 @@ const StoragePage = () => {
 								category={category}
 								ingredients={ingredient}
 								handleDelete={handleDeleteIngredient}
+								handleUpdate={handleUpdateIngredient}
 							/>
 						))}
 					</div>
