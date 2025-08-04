@@ -2,18 +2,35 @@
   display: flex;
   justify-content: space-between;
   padding: 0.5rem;
-  background-color: rgba(238, 237, 237, 0.904);
+  background-color: #F7F9FB;
   border-radius: 8px;
   align-items: center;
+  border: 1px solid #d0d5db96;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
 }
 
 .delete-allergy {
   margin-left: 0.5rem;
   border: none;
   background: transparent;
+  display: inline-block;
+  position: relative;
 }
 
-.delete-allergy:hover {
-  background-color: rgb(228, 228, 228);
-  border-radius: 4px;
+.delete-allergy::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #32a867;
+  transform-origin: bottom right;
+  transition: transform 0.25s ease-out;
+}
+
+.delete-allergy:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
 }

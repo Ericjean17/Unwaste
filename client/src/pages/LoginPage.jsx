@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "../css/RegisterPage.css";
 import Header from "../components/Header";
 import Input from "../components/Input";
@@ -9,6 +10,7 @@ export default function LoginPage() {
 		username: "", 
 		password: ""
 	});
+	const navigate = useNavigate();
 	
 	const handleLogin = async e => {
 		e.preventDefault(); // stop user from submitting the form
@@ -26,8 +28,7 @@ export default function LoginPage() {
 				localStorage.setItem("userId", data.userId); // save user id in localStorage
 				localStorage.setItem("token", data.token); // JWT is saved in browser across page refreshes, allows them to access their ingredient page
 				alert("Login successful");
-				window.location.href = `users/${data.userId}/ingredients`
-				// navigate(`/users/${userId}/ingredients`);
+				navigate(`/users/${data.userId}/ingredients`);
 			} else {
 				alert(data.message);
 			}
@@ -45,6 +46,16 @@ export default function LoginPage() {
 			...prevForm, [name]: value
 		}));
 	}
+
+	useEffect(() => {
+		const userId = localStorage.getItem("userId");
+		const token = localStorage.getItem("token");
+
+		if (userId && token) {
+			alert("You are already logged in");
+			navigate(`/users/${userId}/ingredients`);
+		}
+	}, [])
 
 	return (
 		<section className="register-page">

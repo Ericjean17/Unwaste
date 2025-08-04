@@ -183,8 +183,19 @@ app.put("/users/:id/ingredients", authenticateToken, async (req, res) => {
     } catch (err) {
         console.error(err.message);
     }
+});
 
+app.get("/users/:id/diet", authenticateToken, async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const getUserDiet = await pool.query("SELECT * FROM users WHERE id = $1", [id])
+        res.status(200).json(getUserDiet.rows[0]);
+    } catch (err) {
+        console.error(`Failed to get data`, err.message);
+    }
 })
+
 app.listen(3000, () => {
     console.log("listening on port 3000");
 });

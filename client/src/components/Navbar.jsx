@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import "../css/Navbar.css";
 import MenuIcon from '@mui/icons-material/Menu';
 import IconButton from '@mui/material/IconButton';
@@ -16,7 +16,7 @@ const Navbar = () => {
 		localStorage.removeItem("userId");
 		localStorage.removeItem("token");
 
-		navigate("http://localhost:3000/login");
+		navigate("../login");
 	}
 
 	return (
@@ -26,14 +26,14 @@ const Navbar = () => {
 				<nav>
 					<ul className={`nav-items ${menuOpen ? "open" : ""}` }>
 						<li>
-							<a href={`/users/${userId}/recipes`} className="text-accent-100 text-font fw-bold">Recipes</a>
+							<Link to={`/users/${userId}/recipes`} className="text-accent-100 text-font fw-bold">Recipes</Link>
 						</li>
-						<li><a href={`/users/${userId}/ingredients`} className="text-accent-100 text-font fw-bold">Ingredients</a></li>
-						<li><a href={`/users/${userId}/diet`} className="text-accent-100 text-font fw-bold">Diet</a></li>
+						<li><Link to={`/users/${userId}/ingredients`} className="text-accent-100 text-font fw-bold">Ingredients</Link></li>
+						<li><Link to={`/users/${userId}/diet`} className="text-accent-100 text-font fw-bold">Diet</Link></li>
 						<li>
-							<a href={`/users/login`} className="logout" onClick={handleLogout}>
+							<Link to={`/login`} className="logout" onClick={handleLogout}>
 								<span className="material-symbols-outlined">logout</span><span>Logout</span>
-							</a>
+							</Link>
 						</li>
 					</ul>
 				</nav>

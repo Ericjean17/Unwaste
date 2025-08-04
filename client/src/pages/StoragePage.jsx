@@ -74,12 +74,6 @@ const StoragePage = () => {
 		}
 	}
 
-  // Logout of the account by removing the token and sending them back to the login screen
-	const logout = () => {
-		localStorage.removeItem("token");
-		navigate("/login");
-	}
-
 	// Group ingredients by category in the form of (e.g., {Fruits: [...], Dairy: [...]}
 	const groupedIngredients = ingredients.reduce((accumulator, ingredient) => {
     // Get the category of the ingredient, if it is not in the accumulator, add the category as a key
@@ -136,7 +130,7 @@ const StoragePage = () => {
 			alert("It's the same ingredient dummy");
 			return;
 		}
-		
+
 		try {
 			const response = await fetch(`http://localhost:3000/users/${userId}/ingredients`, {
 				method: "PUT",
@@ -218,6 +212,7 @@ const StoragePage = () => {
 								ingredients={ingredient}
 								handleDelete={handleDeleteIngredient}
 								handleUpdate={handleUpdateIngredient}
+								className="card"
 							/>
 						))}
 					</div>

@@ -56,7 +56,7 @@ body {
 }
 
 .logout {
-  background-color: rgba(219, 221, 223, 0.877);
+  background-color: #EDF0F9;
   display: flex;
   justify-content: center;
   align-items: center;

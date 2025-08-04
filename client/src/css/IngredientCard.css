@@ -1,9 +1,10 @@
 .card-container {
-    background-color: rgba(238, 237, 237, 0.904);
+    background-color: #F7F9FB;
     border-radius: 10px;
     width: 100%;
     padding: 1rem;
-    border: 1px solid rgb(204, 204, 204);
+    border: 1px solid #d0d5db96;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06); /* Shadow 0px right 2px down 4px blur*/
 }
 
 .category {
@@ -13,7 +14,7 @@
 }
 
 .ingredients li {
-    background-color: #fefefe;
+    background-color: #FEFFFF;
     margin-bottom: 8px;
     padding: 0.5rem;
     border-radius: 4px;
@@ -33,6 +34,7 @@
     justify-content: space-between;
     width: 100%;
     gap: 0.5rem;
+    border: 1px solid #d0d5db96;
 }
 
 .ingredient-row > span {
