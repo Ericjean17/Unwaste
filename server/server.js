@@ -23,7 +23,7 @@ function authenticateToken(req, res, next) {
 
     // Check if the token is valid, decode payload, and ensure it hasn't expired or been tampered with
     try {
-        const user = jwt.verify(token, process.env.JWT_SECRET); // Decode token and extract payload (userId)
+        const user = jwt.verify(token, process.env.VITE_JWT_SECRET); // Decode token and extract payload (userId)
         req.user = user; // Attach decoded user data to the request
         next();
     } catch (err) {

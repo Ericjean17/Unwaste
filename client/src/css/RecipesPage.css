@@ -1,18 +1,69 @@
-.recipe-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
+.recipe-page {
+  padding: 1.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
-.recipe-container > h2 {
+.recipe-input-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+.recipe-input-container > h2 {
   text-align: center;
-  font-weight: 600;
+  font-weight: 700;
+  font-size: 2rem;
+}
+
+.recipe-input-container form {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .recipe-input {
-  border-radius: 12px;
+  border-radius: 25px;
   border: 1px solid black;
-  padding: 1rem;
-  margin: 2rem 0;
+  padding: 0.75rem 1rem;
+  margin: 1rem 0;
+  width: 100%;
+  max-width: 600px;
+  font-size: 1rem;
+}
+
+.generated-recipes {
+  display: flex;
+  height: 60vh;
+  justify-content: center;
+  align-items: center;
+}
+
+.loader {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background: linear-gradient(0deg, #FFFFFF 50%, #32a867 100%);
+  animation: spin 1s linear infinite;
+}
+
+.inner-circle {
+  width: 90%;
+  height: 90%;
+  background-color: white;
+  border-radius: 50%;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
