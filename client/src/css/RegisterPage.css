@@ -30,18 +30,9 @@
     max-width: 500px;
 }
 
-.two-columns input {
-    width: 100%;
-}
-
 .user-info {
     display: flex;
     flex-direction: column;
-}
-
-.two-columns {
-    display: flex;
-    gap: 1rem;
 }
 
 .register-button {
@@ -51,12 +42,12 @@
 }
 
 .register-button button {
-    padding: 1rem 2rem;
+    padding: 0.875rem;
     border-radius: 8px;
     border: none;
     font-size: 1rem;
     width: 100%;
-    max-width: 211px;
+    max-width: 199px;
     background-color: #2F975D;
     color: rgb(248, 248, 248);
 }

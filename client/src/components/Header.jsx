@@ -1,25 +1,22 @@
-import { useState } from "react";
+import { NavLink } from "react-router-dom";
+
 import "../css/Header.css";
 
 const Header = () => {
-	// const toggleMenu = () => {
-	// 	setShowMenuIcon(!setShowMenuIcon);
-	// }
-
 	return (
-		<header id='header' className='primary-header text-font'>
+		<header id='header' className='primary-header'>
 			<div className="header-container">
 				<div>
-					<a href="/">
+					<NavLink to="/">
 						<span className='fs-500 text-neutral-900 fw-bold'>Unwaste</span>
-					</a>
+					</NavLink>
 				</div>
 				<div className="btns-auth">
 					<button className="btn-log-in text-font fw-bold">
-						<a href="/login">Log In</a>
+						<NavLink to="/login">Log In</NavLink>
 					</button>
 					<button className="btn-sign-in bg-primary-400 text-accent-400 text-font fw-bold">
-						<a href="/register">Sign Up</a>
+						<NavLink to="/register">Sign Up</NavLink>
 					</button>
 				</div>
 			</div>

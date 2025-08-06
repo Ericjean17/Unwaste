@@ -6,11 +6,11 @@ body {
 .app-name {
   font-size: 1.5rem;
   font-weight: 800;
+  user-select: none;
 }
 
-/* Hamburger icon base style (hidden on large screens) */
 .hamburger {
-  display: none; /* Hidden on larger screens by default */
+  display: none; /* Hide hamburger menu when screen not wide enough */
   flex-direction: column;
   justify-content: space-between;
   width: 24px;
@@ -26,33 +26,24 @@ body {
   height: 3px;
   width: 100%;
   background-color: #333; 
-  border-radius: 2px;
+  border-radius: 8px;
 }
 
 .navbar-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 70vw;
-    height: 80px;
-    padding: 0.6rem 1.5rem;
-    margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 70vw;
+  height: 80px;
+  padding: 0.6rem 1.5rem;
+  margin: 0 auto;
 }
 
 .nav-items {
-    display: flex;
-    align-items: center;
-    gap: 3rem;
-    list-style: none;
-}
-
-.nav-items li {
-    list-style: none;
-    font-weight: bold;
-}
-
-.nav-items li a {
-  text-decoration: none; /* optional: removes underline */
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  list-style: none;
 }
 
 .logout {
@@ -71,16 +62,36 @@ body {
   margin-right: 4px;
 }
 
+.navbar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 998;
+  backdrop-filter: blur(2px);
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 /* Mobile styles */
 @media (max-width: 900px) {
   .navbar-container {
-    display: flex;
-    justify-content: space-between;
     width: 95%;
   }
 
   .hamburger {
     display: flex;
+    z-index: 1000;
   }
 
   .nav-items {
@@ -101,6 +112,7 @@ body {
     
     /* Slide out of view */
     transform: translateX(100%);
+    transition: transform 0.3s ease;
   }
 
   .nav-items.open {

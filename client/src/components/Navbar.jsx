@@ -1,28 +1,53 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "../css/Navbar.css";
-import MenuIcon from '@mui/icons-material/Menu';
-import IconButton from '@mui/material/IconButton';
 
 const Navbar = () => {
 	const [menuOpen, setMenuOpen] = useState(false);
-	const toggleMenu = () => setMenuOpen(!menuOpen);
 	const navigate = useNavigate();
-	
 	const userId = localStorage.getItem("userId");
 
-	// To logout a user, remove their token so they cannot access any authorized routes
+	const toggleMenu = () => {
+		setMenuOpen(!menuOpen);
+	};
+
+	const handleOverlayClick = (e) => {
+		if (e.target === e.currentTarget) {
+			setMenuOpen(false);
+		}
+	};
+
+	// To logout a user, remove their token and id so they cannot access any authorized routes
 	const handleLogout = () => {
 		localStorage.removeItem("userId");
 		localStorage.removeItem("token");
-
 		navigate("../login");
 	}
 
+	useEffect(() => {
+		if (menuOpen) {
+			document.body.style.overflow = 'hidden';
+		} else {
+			document.body.style.overflow = 'unset';
+		}
+
+		return () => {
+			document.body.style.overflow = 'unset';
+		}
+	}, [menuOpen])
+
 	return (
 		<header id="navbar">
-			<div className="navbar-container primary-header text-font">
-				<a href="/recipes" className='fs-500 text-neutral-900 app-name'>Unwaste</a>
+			{/* Overlay */}
+			{menuOpen && (
+				<div
+					className="navbar-overlay"
+					onClick={handleOverlayClick}
+				/>
+			)}
+
+			<div className="navbar-container">
+				<h1 className='app-name'>Unwaste</h1>
 				<nav>
 					<ul className={`nav-items ${menuOpen ? "open" : ""}` }>
 						<li>

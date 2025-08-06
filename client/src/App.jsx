@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from "./components/Navbar";
 import TitlePage from "./pages/TitlePage";
 import RegisterPage from "./pages/RegisterPage";
 import StoragePage from "./pages/StoragePage";

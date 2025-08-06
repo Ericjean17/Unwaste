@@ -18,6 +18,5 @@
     font-size: 1rem; /* keep input text at normal size */
     padding: 0.5rem;
     border-radius: 8px;
-    border: none;
-    background-color: rgb(235, 235, 235);
+    border: 1px solid rgb(204, 204, 204);
 }

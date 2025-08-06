@@ -1,7 +1,9 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import "../css/RecipesPage.css";
 
 const RecipesPage = () => {
+  const [recipeInput, setRecipeInput] = useState("");
   const navigate = useNavigate();
   // const hasRun = useRef(false); // useRef persists across re-renders
 
@@ -45,7 +47,18 @@ const RecipesPage = () => {
 }, []);
 
   return (
-    <h1>Recipes page</h1>
+    <div className="recipe-page">
+      <div className="recipe-container">
+        <h2>What are you cooking today</h2>
+        <input 
+          type="text"
+          placeholder="Search for a recipe..."
+          onChange={(e) => e.target.value}
+          value={recipeInput}
+          className="recipe-input"
+        />
+      </div>
+    </div>
   )
 }
 

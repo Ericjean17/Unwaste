@@ -55,7 +55,9 @@ const IngredientCard = ({ category, ingredients, handleDelete, handleUpdate }) =
 					</span>
 				</div>
 				{/* <h4 className="category">{category}</h4> */}
-				<div className={`category-content ${isCollapsed ? "collapsed" : ""}`}>
+				<div className={`category-content ${isCollapsed ? "collapsed" : ""}`} style={{
+					transition: isCollapsed ? "max-height 0.3s ease-out" : "max-height 0.65s ease-in"
+				}}>
 					{ingredients.length > 0 ? (
 						<ul className="ingredients">
 							{ingredients.map((ingredient, i) => 

@@ -109,7 +109,6 @@
     display: flex;
     justify-content: flex-end;
     flex: 1;
-
 }
 
 .expand-icon {
@@ -118,14 +117,16 @@
 }
 
 .category-content {
-    transition: max-height 0.3s ease, opacity 0.3s ease;
-    overflow: hidden;
-    opacity: 1;
+  max-height: 1000px; 
+  opacity: 1;
+  transition: max-height 0.3s ease-out;
+  overflow: hidden;
 }
 
 .category-content.collapsed {
-    max-height: 0;
+  max-height: 0;
 }
+
 
 
 
