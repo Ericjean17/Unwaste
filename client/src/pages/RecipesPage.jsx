@@ -69,7 +69,7 @@ const RecipesPage = () => {
       const searchEngineId = import.meta.env.VITE_SEARCH_ENGINE_ID;
       const searchKey = import.meta.env.VITE_CUSTOM_SEARCH_KEY;
       const query = encodeURIComponent(recipe); // e.g., " " = %20
-      const apiUrl = `https://www.googleapis.com/customsearch/v1?key=${searchKey}=${searchEngineId}&q=${query}&searchType=image`;
+      const apiUrl = `https://www.googleapis.com/customsearch/v1?key=${searchKey}&cx=${searchEngineId}&q=${query}&searchType=image`;
       
       const response = await fetch(apiUrl);
       if (!response.ok) {
@@ -123,7 +123,7 @@ const RecipesPage = () => {
         console.log(`Got image: ${imgUrl} for ${recipe.name}`)
         const updatedRecipe = {
           ...recipe, 
-          img: imgUrl || defaultImage
+          img: imgUrl || null
         };
         console.log(`Updated recipe ${index + 1}:`, updatedRecipe);
         return updatedRecipe; // Update img field for each recipe
