@@ -1,8 +1,7 @@
 require("dotenv").config({ path: require("path").resolve(__dirname, "../.env") });
-// require("dotenv").config();
 const express = require("express");
 const app = express();
-const cors = require("cors"); // why this
+const cors = require("cors"); 
 const bcrypt = require("bcrypt");
 const pool = require("./db").default;
 const jwt = require("jsonwebtoken");
@@ -23,11 +22,11 @@ function authenticateToken(req, res, next) {
 
     // Check if the token is valid, decode payload, and ensure it hasn't expired or been tampered with
     try {
-        const user = jwt.verify(token, process.env.VITE_JWT_SECRET); // Decode token and extract payload (userId)
+        const user = jwt.verify(token, process.env.JWT_SECRET); // Decode token and extract payload (userId)
         req.user = user; // Attach decoded user data to the request
         next();
     } catch (err) {
-        res.sendStatus(403).json({ message: "Invalid token, please login again" }); // Invalid token
+        res.status(403).json({ message: "Invalid token, please login again" }); // Invalid token
     }
 };
 
@@ -48,7 +47,6 @@ app.post("/register", async (req, res) => {
         const newUser = await pool.query("INSERT INTO users (username, hashed_password) VALUES ($1, $2) RETURNING *", [username, hashedPassword]);
         
         res.json(newUser.rows[0]);
-        //res.status(201).json(newUser.rows);
     } catch (err) {
         console.error(err.message);
     }
@@ -66,7 +64,7 @@ app.post("/login", async (req, res) => {
         
         const user = userQuery.rows[0]; // Stores their id number, unique username and password
         
-        // Check if user inputted password matches the hashed password as well
+        // Check if user inputted password matches the hashed password 
         const validPassword = await bcrypt.compare(password, user.hashed_password);
         if (!validPassword) {
             return res.status(401).json({ message: "Invalid username or password" })
@@ -76,7 +74,7 @@ app.post("/login", async (req, res) => {
         const token = jwt.sign(
             { userId: user.id }, // payload (info to include in token)
             process.env.JWT_SECRET, // used to sign token to verify it later
-            { expiresIn: "4h" }
+            { expiresIn: "3h" }
         );
         res.json({ token, message: "Login successful", userId: user.id})
     } catch (err) {
@@ -122,7 +120,7 @@ app.delete("/users/:id/ingredients", authenticateToken, async (req, res) => {
             [userId, ingredient, category]
         );
 
-        if (deleteIngredient.rowCount === 0) { // rows = [] containing rows returning by query, rowCount = num indicating how many rows were affected
+        if (deleteIngredient.rowCount === 0) { // .rows = [] containing rows returning by query, .rowCount = num indicating how many rows were affected
             return res.status(404).json({ message: "Ingredient not found" });
         }
 
@@ -131,24 +129,6 @@ app.delete("/users/:id/ingredients", authenticateToken, async (req, res) => {
         console.log(err.message);
     }
 });
-
-app.get("/users/:id/recipes", authenticateToken, async (req, res) => {
-    const { id } = req.params;
-
-    const result = await pool.query(
-        `SELECT *
-        FROM users WHERE id = $1`,
-        [id]
-    );
-    const { pref_meats, pref_fish, pref_veggies, pref_spicy } = result.rows[0];
-    const isSet = pref_meats && pref_fish && pref_veggies && pref_spicy;
-
-    if (!isSet) {
-        return res.status(403).json({ error: "Please set your diet preferences first" });
-    }
-    res.json({ message: "Diet set" });
-
-})
 
 app.put("/users/:id/diet", authenticateToken, async (req, res) => {
     const { id } = req.params;
@@ -190,10 +170,32 @@ app.get("/users/:id/diet", authenticateToken, async (req, res) => {
     const { id } = req.params;
 
     try {
-        const getUserDiet = await pool.query("SELECT * FROM users WHERE id = $1", [id])
-        res.status(200).json(getUserDiet.rows[0]);
+        const diet = await pool.query("SELECT * FROM users WHERE id = $1", [id])
+        res.status(200).json(diet.rows[0]);
     } catch (err) {
         console.error(`Failed to get data`, err.message);
+    }
+})
+
+app.get("/users/:id/recipes", authenticateToken, async (req, res) => {
+    const { id } = req.params;
+    const { data } = req.query; // get query parameter from URL
+
+    try {
+        if (data === "diet") {
+            const diet = await pool.query("SELECT * FROM users WHERE id = $1", [id]);
+            res.json(diet.rows[0]);
+        } else if (data === "ingredients") {
+            const ingredients = await pool.query(
+                "SELECT * FROM ingredients WHERE user_id = $1", [id]
+            );
+            res.json(ingredients.rows);
+        } else {
+            return res.status(401).json({ error: "Failed to get diet or ingredients"});
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Database error"})
     }
 })
 

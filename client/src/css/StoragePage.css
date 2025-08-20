@@ -1,21 +1,8 @@
 .ingredients-container {
-    padding: 3rem clamp(1.5rem, 0.408rem + 4.66vw, 6rem); /* Smaller padding for all screens */
+    padding: 3rem clamp(1.5rem, 0.408rem + 4.66vw, 6rem);
     margin: 0 auto;
     max-width: 1400px;
 }
-
-/* Optional: tweak for larger screens
-@media screen and (min-width: 768px) {
-    .ingredients-container {
-        padding: 3rem 4rem;
-    }
-}
-
-@media (min-width: 1024px) {
-    .ingredients-container {
-        padding: 3rem 6rem;
-    }
-} */
 
 @media screen and (min-width: 432px) {
     .ingredient-form {
@@ -46,7 +33,6 @@
     border-width: 1px;
 }
 
-/* doesn't work */
 .ingredient-add:focus {
     border-color: rgb(103, 150, 212);
     border-style: solid;
@@ -74,7 +60,7 @@
 }
 
 .dropdown {
-    position:relative;
+    position: relative;
     flex-grow: 1;
     text-align: center;
     border-radius: 4px;
@@ -91,10 +77,30 @@
 }
 
 .cards {
-    /* display: flex;
-    flex-wrap: wrap; */
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 1.5rem;
+    
+    /* Mobile: 1 column (full width) */
+    grid-template-columns: 1fr;
 }
 
+/* Tablet: 2 columns (half width each) */
+@media screen and (min-width: 768px) {
+    .cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Desktop/Laptop: 3-4 columns (quarter-ish width each) */
+@media screen and (min-width: 1024px) {
+    .cards {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Large screens: 4 columns */
+@media screen and (min-width: 1400px) {
+    .cards {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}

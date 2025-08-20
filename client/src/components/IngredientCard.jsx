@@ -47,14 +47,14 @@ const IngredientCard = ({ category, ingredients, handleDelete, handleUpdate }) =
 					<div className="left"></div>
 					<h4 className="category">{category}</h4>
 					<span className={`right`} onClick={toggleCollapse}>
-						<ExpandMoreIcon style={{
-							transition: 'transform 0.3s ease',
-							transform: isCollapsed ? 'rotate(180deg)' : 'rotate(0deg)'
-        		}}
-				className={`expand-icon ${isCollapsed ? "rotated" : ""}`}/>
+						<ExpandMoreIcon 
+							style={{
+								transition: 'transform 0.3s ease',
+								transform: isCollapsed ? 'rotate(180deg)' : 'rotate(0deg)'
+        			}}
+							className={`expand-icon ${isCollapsed ? "rotated" : ""}`}/>
 					</span>
 				</div>
-				{/* <h4 className="category">{category}</h4> */}
 				<div className={`category-content ${isCollapsed ? "collapsed" : ""}`} style={{
 					transition: isCollapsed ? "max-height 0.3s ease-out" : "max-height 0.65s ease-in"
 				}}>
@@ -82,9 +82,9 @@ const IngredientCard = ({ category, ingredients, handleDelete, handleUpdate }) =
 									</span>
 
 									<div className="input-btns">
+										{/* Edit - show update or cancel edit */}
 										{editingIndex === i ? (
 											<>
-												{/* <button className="save-btn" onClick={saveEdit}> */}
 												<button className="save-btn" onClick={saveEdit}>
 													<CheckIcon />
 												</button>
@@ -93,6 +93,7 @@ const IngredientCard = ({ category, ingredients, handleDelete, handleUpdate }) =
 												</button>
 											</>
 										) : (
+											// View - show edit or delete ingredient button
 											<>
 												<button className="edit-btn" onClick={() => startEdit(i, ingredient)}>
 													<ModeEditIcon />

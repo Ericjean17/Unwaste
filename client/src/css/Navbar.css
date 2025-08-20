@@ -1,5 +1,4 @@
 body {
-  /* prevent horizontal scrolling */
   overflow-x: hidden 
 }
 
@@ -57,6 +56,11 @@ body {
   font-weight: 600;
 }
 
+.logout:hover {
+  transition: background-color 0.25s ease;
+  background-color: #dcdfec;
+}
+
 .material-symbols-outlined {
   font-size: 1rem;
   margin-right: 4px;
@@ -81,6 +85,31 @@ body {
   to {
     opacity: 1;
   }
+}
+
+.nav-items li a {
+  position: relative;
+  text-decoration: none;
+  color: #333;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+/* Underline effect */
+.nav-items li:not(:last-child) a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px; /* space between text and line */
+  width: 0;
+  height: 2px;
+  background-color: #32a867; 
+  transition: width 0.3s ease;
+  border-radius: 2px;
+}
+
+.nav-items li a:hover::after {
+  width: 100%;
 }
 
 /* Mobile styles */

@@ -16,14 +16,15 @@ const DietPage = () => {
     allergies: []
   });
   const navigate = useNavigate();
+  const userId = localStorage.getItem("userId");
+  const token = localStorage.getItem("token");
   
   // After submitting form, saves all the user's preferenceson their diet
   const handleSubmit = async e => {
     e.preventDefault();
-    const userId = localStorage.getItem("userId");
-    const token = localStorage.getItem("token");
 
-    const response = await fetch(`http://localhost:3000/users/${userId}/diet`, {
+    // const response = 
+    await fetch(`http://localhost:3000/users/${userId}/diet`, {
       method: "PUT",
       headers: { 
         "Content-Type": "application/json",
@@ -32,9 +33,10 @@ const DietPage = () => {
       body: JSON.stringify(diet)
     })
 
-    const data = await response.json();
-    console.log(data);
-    alert(`Preferences saved: Meat: ${diet.meatConsumption}, Fish: ${diet.fishConsumption}, Veggie: ${diet.vegetableConsumption}, Spicy: ${diet.spicinessLevel}`)
+    // const data = await response.json();
+    // console.log(data);
+    // alert(`Preferences saved: Meat: ${diet.meatConsumption}, Fish: ${diet.fishConsumption}, Veggie: ${diet.vegetableConsumption}, Spiciness: ${diet.spicinessLevel}`)
+    alert("Saved diet");
     navigate(`/users/${userId}/ingredients`)
   }
   
@@ -42,14 +44,14 @@ const DietPage = () => {
   const handleAdd = e => {
     e.preventDefault();
     if (allergy === "") {
-      alert("Cannot add empty allergy");
+      alert("Cannot add an empty allergy");
       return;
     }
     //setAllergies([...allergies, allergy])
     setDiet(prevDiet => ({
       ...prevDiet, allergies: [...prevDiet.allergies, allergy]
     }));
-    alert(`Added ${allergy}`);
+    // alert(`Added ${allergy}`);
     setAllergy("");
   }
 
@@ -74,23 +76,31 @@ const DietPage = () => {
   }
   
   const getDiet = async () => {
-    const userId = localStorage.getItem("userId");
-    const token = localStorage.getItem("token");
+    try {
+      const response = await fetch(`http://localhost:3000/users/${userId}/diet`, {
+        headers: { "Authorization": `Bearer ${token}` }
+      });
+      
+      if (!response.ok) {
+        localStorage.removeItem("userId");
+        localStorage.removeItem("token");
+        alert("You need to login");
+        navigate("/login");
+      }
 
-    const response = await fetch(`http://localhost:3000/users/${userId}/diet`, {
-      headers: { "Authorization": `Bearer ${token}` }
-    });
-
-    const data = await response.json();
-    alert(`Diet is: ${data.pref_meats}, ${data.pref_fish}, ${data.pref_veggies}, ${data.pref_spicy}, ${data.allergies}`)
-    setDiet(prevDiet => ({
-      ...prevDiet, 
-      meatConsumption: data.pref_meats,
-      fishConsumption: data.pref_fish,
-      vegetableConsumption: data.pref_veggies,
-      spicinessLevel: data.pref_spicy,
-      allergies: data.allergies || []
-    }));
+      const data = await response.json();
+      // alert(`Diet is: ${data.pref_meats}, ${data.pref_fish}, ${data.pref_veggies}, ${data.pref_spicy}, ${data.allergies}`);
+      setDiet(prevDiet => ({
+        ...prevDiet, 
+        meatConsumption: data.pref_meats,
+        fishConsumption: data.pref_fish,
+        vegetableConsumption: data.pref_veggies,
+        spicinessLevel: data.pref_spicy,
+        allergies: data.allergies || []
+      }));
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   useEffect(() => {

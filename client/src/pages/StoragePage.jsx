@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
-import "../css/StoragePage.css";
 import IngredientCard from "../components/IngredientCard";
+import "../css/StoragePage.css";
 import { useNavigate } from "react-router-dom";
 
 const StoragePage = () => {
@@ -24,11 +24,27 @@ const StoragePage = () => {
 					"Authorization": `Bearer ${token}` // Makes sure that the user can only send REST api if they have a token
 				}
 			});
+
+			if (response.status === 403) {
+				// Token expired or invalid
+				localStorage.removeItem("token");
+				localStorage.removeItem("userId");
+				navigate("/login");
+				return;
+			}
+			
+			if (!response.ok) {
+				throw new Error("Failed to fetch ingredients");
+			}
+			
 			const data = await response.json(); // data becomes object[] containing { id, ingredient, category, user_id }
 			setIngredients(data);
 		
 		} catch (err) {
 			console.error("Failed to fetch ingredents:", err.message);
+			// Clear localStorage and redirect to login
+			localStorage.removeItem("token");
+			localStorage.removeItem("userId");
       navigate("/login"); // Goes to login page if they don't have a token
 		}
 	}
@@ -154,7 +170,7 @@ const StoragePage = () => {
 						: item
 					)
 				)
-				alert(`Edited ingredient ${oldIngredient} to ${newIngredient}`)
+				// alert(`Edited ingredient ${oldIngredient} to ${newIngredient}`)
 			} else {
 				console.error("Failed to update ingredient");
 			}
