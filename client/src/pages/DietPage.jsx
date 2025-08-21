@@ -77,23 +77,14 @@ const DietPage = () => {
       const response = await fetch(`http://localhost:3000/users/${userId}/diet`, {
         headers: { "Authorization": `Bearer ${token}` }
       });
-      
       if (!response.ok) {
         localStorage.removeItem("userId");
         localStorage.removeItem("token");
+        localStorage.removeItem("currRecipes");
         alert("You need to login");
         navigate("/login");
         return;
       }
-
-      if (response.status === 403) {
-				// Token expired or invalid
-				localStorage.removeItem("token");
-				localStorage.removeItem("userId");
-				localStorage.removeItem("currRecipes");
-				navigate("/login");
-				return;
-			}
 
       const data = await response.json();
       // alert(`Diet is: ${data.pref_meats}, ${data.pref_fish}, ${data.pref_veggies}, ${data.pref_spicy}, ${data.allergies}`);

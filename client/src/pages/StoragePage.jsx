@@ -25,28 +25,21 @@ const StoragePage = () => {
 				}
 			});
 
-			if (response.status === 403) {
-				// Token expired or invalid
+			if (!response.ok) {
+				// Assume token expired or invalid
 				localStorage.removeItem("token");
 				localStorage.removeItem("userId");
 				localStorage.removeItem("currRecipes");
+				alert("You need to login");
 				navigate("/login");
 				return;
 			}
-			
-			if (!response.ok) {
-				throw new Error("Failed to fetch ingredients");
-			}
-			
+
 			const data = await response.json(); // data becomes object[] containing { id, ingredient, category, user_id }
 			setIngredients(data);
 		
 		} catch (err) {
 			console.error("Failed to fetch ingredents:", err.message);
-			// Clear localStorage and redirect to login
-			localStorage.removeItem("token");
-			localStorage.removeItem("userId");
-      navigate("/login"); // Goes to login page if they don't have a token
 		}
 	}
 	
@@ -117,7 +110,6 @@ const StoragePage = () => {
 				},
 				body: JSON.stringify({ ingredient: ingredient, category: category }) // the ingredient and category to delete
 			});
-      const data = await response.json();
       
       // Remove from local state after deleting ingredient from database
 			if (response.ok) {

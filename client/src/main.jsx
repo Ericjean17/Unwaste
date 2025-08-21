@@ -5,7 +5,7 @@ import App from './App.jsx'
 
 createRoot(document.getElementById('root')).render(
   // Strict mode is for development, alerts appear twice
-  // <StrictMode>
-    <App /> // Remove comma after renabling strict mode
-  // {/* </StrictMode>, */}
+  <StrictMode>
+    <App /> 
+  </StrictMode>
 )

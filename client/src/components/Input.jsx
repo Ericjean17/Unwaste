@@ -17,6 +17,7 @@ const Input = ({ label, name, type, id, value, onChange }) => {
           placeholder={label}
           value={value}
           onChange={onChange}
+          autoComplete="current-password"
           required
         />
       </div>

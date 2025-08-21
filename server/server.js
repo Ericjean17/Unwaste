@@ -18,7 +18,7 @@ function authenticateToken(req, res, next) {
     const authHeader = req.headers['authorization']; // Browsers send headers like "Bearer [string of chars]"
     const token = authHeader && authHeader.split(" ")[1]; // Get the token in "Bearer <token>"
 
-    if (!token) return res.status(401).json({ message: "No token provided" });
+    if (!token) return res.status(401).json({ message: "No token provided" }); // user needs token to be authenticated
 
     // Check if the token is valid, decode payload, and ensure it hasn't expired or been tampered with
     try {
@@ -26,7 +26,9 @@ function authenticateToken(req, res, next) {
         req.user = user; // Attach decoded user data to the request
         next();
     } catch (err) {
-        res.status(403).json({ message: "Invalid or expired token, please login again" }); // Invalid token
+        if (err.name === "TokenExpiredError") {
+            return res.status(403).json({ route: "/login", message: "Expired token, please login again" }); // Invalid token
+        }
     }
 };
 
@@ -189,9 +191,10 @@ app.get("/users/:id/recipes", authenticateToken, async (req, res) => {
             const ingredients = await pool.query(
                 "SELECT * FROM ingredients WHERE user_id = $1", [id]
             );
+            if (ingredients.rows.length === 0) {
+                return res.status(403).json({ route: "/ingredients", message: "Add at least one ingredient first" })
+            }
             res.json(ingredients.rows);
-        } else {
-            return res.status(401).json({ error: "Failed to get diet or ingredients"});
         }
     } catch (error) {
         console.error(error);

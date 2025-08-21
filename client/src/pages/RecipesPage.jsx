@@ -171,8 +171,13 @@ const RecipesPage = () => {
         const diet = await fetch(`http://localhost:3000/users/${userId}/recipes?data=diet`, {
           headers: { "Authorization" : `Bearer ${token}`}
         });
-        
-        if (diet.status === 403) {
+        const dietData = await diet.json();
+        if (dietData.pref_fish === null && dietData.pref_meats === null && dietData.pref_spicy === null && dietData.pref_veggies === null) {
+          alert("Please set your diet preferences first");
+          navigate(`/users/${userId}/diet`);
+          return;
+        }
+        if (!diet.ok) {
           // Token expired or invalid
           localStorage.removeItem("token");
           localStorage.removeItem("userId");
@@ -180,24 +185,8 @@ const RecipesPage = () => {
           navigate("/login");
           return;
 			  }
-        
-        if (diet.status === 403) { // Forbidden
-          // User hasn't set diet preferences - go to diet page
-          alert(diet.error || "Please set your diet preferences first");
-          navigate(`/users/${userId}/diet`);
-          return;
-        }
-
-        if (diet.status === 401) { // Unauthorized
-          // Token expired or invalid - go to login
-          localStorage.removeItem("token");
-          localStorage.removeItem("userId");
-          navigate("/login");
-          return;
-        }
         // console.log(JSON.stringify(diet));
         // alert(`Diet is: ${dietData.pref_meats}, ${dietData.pref_fish}, ${dietData.pref_veggies}, ${dietData.pref_spicy}, ${dietData.allergies}`)
-        const dietData = await diet.json();
         setDiet(prevDiet => ({
           ...prevDiet, 
           meatConsumption: dietData.pref_meats,
@@ -206,7 +195,6 @@ const RecipesPage = () => {
           spicinessLevel: dietData.pref_spicy,
           allergies: dietData.allergies || []
         }));
-        // console.log(dietData);
         
         if (!diet.ok) {
           alert("Something went wrong");
@@ -218,13 +206,8 @@ const RecipesPage = () => {
           headers: { "Authorization" : `Bearer ${token}`}
         });
 
-        if (!ingredients.ok) {
-          alert("Failed to fetch ingredients");
-          return;
-        }
-        
         const ingredientsData = await ingredients.json();
-        if (ingredientsData.length === 0) {
+        if (ingredients.status === 403) {
           alert("Please add some ingredients first before searching for recipes");
           navigate(`/users/${userId}/ingredients`)
           return;
