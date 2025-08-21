@@ -27,7 +27,7 @@ export default function LoginPage() {
 			if (response.ok) {
 				localStorage.setItem("userId", data.userId); // save user id in localStorage
 				localStorage.setItem("token", data.token); // JWT is saved in browser across page refreshes, allows them to access their ingredient page
-				alert("Login successful");
+				// alert("Login successful");
 				navigate(`/users/${data.userId}/ingredients`);
 			} else {
 				alert(data.message);
@@ -52,7 +52,7 @@ export default function LoginPage() {
 		const token = localStorage.getItem("token");
 
 		if (userId && token) {
-			alert("You are already logged in");
+			// alert("You are already logged in");
 			navigate(`/users/${userId}/ingredients`);
 		}
 	}, [])
@@ -89,7 +89,6 @@ export default function LoginPage() {
 					</div>
 					<div className="register-button">
 						<button className="bg-primary-400 text-accent-400 fw-bold" type="submit">
-							{/* <a href="/home">Sign Up</a> */}
 							Login
 						</button>
 					</div>

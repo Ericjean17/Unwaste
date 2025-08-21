@@ -26,7 +26,7 @@ function authenticateToken(req, res, next) {
         req.user = user; // Attach decoded user data to the request
         next();
     } catch (err) {
-        res.status(403).json({ message: "Invalid token, please login again" }); // Invalid token
+        res.status(403).json({ message: "Invalid or expired token, please login again" }); // Invalid token
     }
 };
 
@@ -74,7 +74,7 @@ app.post("/login", async (req, res) => {
         const token = jwt.sign(
             { userId: user.id }, // payload (info to include in token)
             process.env.JWT_SECRET, // used to sign token to verify it later
-            { expiresIn: "3h" }
+            { expiresIn: "1h" }
         );
         res.json({ token, message: "Login successful", userId: user.id})
     } catch (err) {

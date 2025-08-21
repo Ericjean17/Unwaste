@@ -33,8 +33,8 @@ const RecipesPage = () => {
 
       try {
         const userIngredients = ingredients.map(ingredient => ingredient.ingredient);
-        console.log(userIngredients);
-        console.log(diet);
+        // console.log(userIngredients);
+        // console.log(diet);
         
         const dietArray = [];
         for (const [key, value] of Object.entries(diet)) {
@@ -43,7 +43,7 @@ const RecipesPage = () => {
 
         const response = await generateRecipeSuggestions(recipeInput, userIngredients, dietArray);
         const fetchedRecipes = JSON.parse(response); // fetchedRecipes is [{...}, {...}] from JSON string
-        console.log(fetchedRecipes);
+        // console.log(fetchedRecipes);
         setRecipes(fetchedRecipes || []);
 
         // Remove the alert - it's showing [object Object]
@@ -56,7 +56,7 @@ const RecipesPage = () => {
       
       } finally {
         setIsLoading(false);
-        console.log("Finally generated recipes");
+        // console.log("Finally generated recipes");
       }
     }
   }
@@ -115,43 +115,51 @@ const RecipesPage = () => {
     // Turns each recipe into a promise with async (async returns a promise)
     // console.log(Array.isArray(recipes), recipes);
     // console.log("recipes in fetchRecipesImages:", recipes);
-    console.log("Starting to fetch images for recipes:", recipes);
+    // console.log("Starting to fetch images for recipes:", recipes);
     const updatedRecipes = await Promise.all(
       recipes.map(async (recipe, index) => {
-        console.log(`Fetching image for recipe ${index + 1}: ${recipe.name}`);
+        // console.log(`Fetching image for recipe ${index + 1}: ${recipe.name}`);
         const imgUrl = await searchImages(recipe.name); // need to get recipe name
-        console.log(`Got image: ${imgUrl} for ${recipe.name}`)
+        // console.log(`Got image: ${imgUrl} for ${recipe.name}`)
         const updatedRecipe = {
           ...recipe, 
           img: imgUrl || null
         };
-        console.log(`Updated recipe ${index + 1}:`, updatedRecipe);
+        // console.log(`Updated recipe ${index + 1}:`, updatedRecipe);
         return updatedRecipe; // Update img field for each recipe
       })
     );
     
     // console.log(`New recipe images: ${updatedImgs}`) // Outputs [object Object * 4]
     setTemp(updatedRecipes);
+    localStorage.setItem("currRecipes", JSON.stringify(updatedRecipes)); // Save and parse recipes in JSON format when revisiting recipes page
     // setRecipes(updatedImgs);
   };
 
   // Fetch images when user prompts for recipes
   useEffect(() => {
-    console.log("Fetching images for ", recipes);
+    // console.log("Fetching images for ", recipes);
     if (recipes.length > 0) {
       fetchRecipesImages();
     }
   }, [recipes])
 
-  // Add this temporarily to debug the state changes
+  // Debug the state changes
+  // useEffect(() => {
+  //   console.log("=== RECIPES STATE DEBUG ===");
+  //   console.log("recipes:", recipes);
+  //   console.log("typeof recipes:", typeof recipes);
+  //   console.log("Array.isArray(recipes):", Array.isArray(recipes));
+  //   console.log("recipes.length:", recipes?.length);
+  //   console.log("===========================");
+  // }, [recipes]);
+
   useEffect(() => {
-    console.log("=== RECIPES STATE DEBUG ===");
-    console.log("recipes:", recipes);
-    console.log("typeof recipes:", typeof recipes);
-    console.log("Array.isArray(recipes):", Array.isArray(recipes));
-    console.log("recipes.length:", recipes?.length);
-    console.log("===========================");
-  }, [recipes]);
+    const savedRecipes = localStorage.getItem("currRecipes");
+    if (savedRecipes) {
+      setTemp(JSON.parse(savedRecipes));
+    }
+  }, [])
 
   useEffect(() => {
     const loadUserData = async () => {
@@ -163,7 +171,16 @@ const RecipesPage = () => {
         const diet = await fetch(`http://localhost:3000/users/${userId}/recipes?data=diet`, {
           headers: { "Authorization" : `Bearer ${token}`}
         });
-
+        
+        if (diet.status === 403) {
+          // Token expired or invalid
+          localStorage.removeItem("token");
+          localStorage.removeItem("userId");
+          localStorage.removeItem("currRecipes");
+          navigate("/login");
+          return;
+			  }
+        
         if (diet.status === 403) { // Forbidden
           // User hasn't set diet preferences - go to diet page
           alert(diet.error || "Please set your diet preferences first");
@@ -189,13 +206,12 @@ const RecipesPage = () => {
           spicinessLevel: dietData.pref_spicy,
           allergies: dietData.allergies || []
         }));
+        // console.log(dietData);
         
         if (!diet.ok) {
           alert("Something went wrong");
           return;
         }
-        console.log(dietData);
-        // setDiet(dietData);
 
         // Get user ingredients
         const ingredients = await fetch(`http://localhost:3000/users/${userId}/recipes?data=ingredients`, {
@@ -213,10 +229,8 @@ const RecipesPage = () => {
           navigate(`/users/${userId}/ingredients`)
           return;
         }
-        console.log(ingredientsData);
+        // console.log(ingredientsData); Array of ingredient objects with user's id from ingredients table 
         setIngredients(ingredientsData)
-
-        console.log("Recipes:", recipes);
       } catch (error) {
         console.error(error);
         return;
@@ -249,7 +263,15 @@ const RecipesPage = () => {
           {!isLoading && (
             <div className="recipes-cards">
               {temp.map((recipe, index) => (
-                <RecipeCard key={index} image={recipe.img} recipe={recipe.name} description={recipe.description} recommended={recipe.recommended} onClick={() => setSelectedRecipe(recipe)}/>
+                <RecipeCard 
+                  key={index} 
+                  image={recipe.img} 
+                  recipe={recipe.name} 
+                  description={recipe.description} 
+                  recommended={recipe.recommended} 
+                  onClick={() => setSelectedRecipe(recipe)}
+                  delay={index * 0.1}
+                />
               ))}
             </div>
           )}

@@ -28,8 +28,8 @@ export default function RegisterPage() {
 				const data = await response.json(); 
 
 				if (response.ok) {
-					console.log("User registered", data);
-					alert(`Welcome: ${data.username} with id: ${data.id}`);
+					// console.log("User registered", data);
+					// alert(`Welcome: ${data.username} with id: ${data.id}`);
 					navigate(`/login`);
 				} else {
 					alert(`Registration failed: ${data.message}`);

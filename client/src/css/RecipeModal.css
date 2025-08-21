@@ -71,7 +71,21 @@
   border-radius: 8px;
   aspect-ratio: 4 / 3;
 }
+@media screen and (max-width: 768px) {
+  .recipe-modal {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;             /* remove margin so it fills screen */
+    border-radius: 0;      /* no rounded corners */
+    max-width: none;
+    max-height: none;
+    box-shadow: none;      /* no floating shadow */
+  }
 
+  .modal-img {
+    max-width: 728px;
+  }
+}
 .modal-steps {
   margin-left: 1rem;
 }

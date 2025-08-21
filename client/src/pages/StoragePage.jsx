@@ -29,6 +29,7 @@ const StoragePage = () => {
 				// Token expired or invalid
 				localStorage.removeItem("token");
 				localStorage.removeItem("userId");
+				localStorage.removeItem("currRecipes");
 				navigate("/login");
 				return;
 			}
@@ -120,9 +121,8 @@ const StoragePage = () => {
       
       // Remove from local state after deleting ingredient from database
 			if (response.ok) {
-        alert(`Ingredient deleted: ${data.deleted}`); // CONSIDER MAKING THIS A DIFFERENT POPUP AT BOTTOM OF SCREEN
-
         // Display all current ingredients where the one that should be deleted isn't shown
+				// alert(`Ingredient deleted: ${data.deleted}`); 
 				setIngredients(prevIngredients => prevIngredients.filter(item => !(item.ingredient === ingredient && item.category === category)));
 			} else {
 				console.error("Failed to delete ingredient");
@@ -162,7 +162,7 @@ const StoragePage = () => {
 			});
 
 			if (response.ok) {
-				const data = response.json();
+				// const data = response.json();
 				// For all ingredients, if the curr matches the only ingredient, then switch it's value to new ingredient
 				setIngredients(prevIngredients => prevIngredients.map(item =>
 					item.ingredient === oldIngredient && item.category === category 

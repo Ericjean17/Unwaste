@@ -36,7 +36,6 @@ const DietPage = () => {
     // const data = await response.json();
     // console.log(data);
     // alert(`Preferences saved: Meat: ${diet.meatConsumption}, Fish: ${diet.fishConsumption}, Veggie: ${diet.vegetableConsumption}, Spiciness: ${diet.spicinessLevel}`)
-    alert("Saved diet");
     navigate(`/users/${userId}/ingredients`)
   }
   
@@ -47,7 +46,6 @@ const DietPage = () => {
       alert("Cannot add an empty allergy");
       return;
     }
-    //setAllergies([...allergies, allergy])
     setDiet(prevDiet => ({
       ...prevDiet, allergies: [...prevDiet.allergies, allergy]
     }));
@@ -69,7 +67,6 @@ const DietPage = () => {
 
   // Show all allergies that do not include the allergy to be deleted
   const handleDelete = allergy => {
-    //setAllergies(prevAllergies => prevAllergies.filter(item => !(item === allergy)));
     setDiet(prevDiet => ({
       ...prevDiet, allergies: prevDiet.allergies.filter(item => !(item === allergy))
     }))
@@ -86,7 +83,17 @@ const DietPage = () => {
         localStorage.removeItem("token");
         alert("You need to login");
         navigate("/login");
+        return;
       }
+
+      if (response.status === 403) {
+				// Token expired or invalid
+				localStorage.removeItem("token");
+				localStorage.removeItem("userId");
+				localStorage.removeItem("currRecipes");
+				navigate("/login");
+				return;
+			}
 
       const data = await response.json();
       // alert(`Diet is: ${data.pref_meats}, ${data.pref_fish}, ${data.pref_veggies}, ${data.pref_spicy}, ${data.allergies}`);
