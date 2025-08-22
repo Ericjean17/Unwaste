@@ -24,7 +24,7 @@ const DietPage = () => {
     e.preventDefault();
 
     // const response = 
-    await fetch(`http://localhost:3000/users/${userId}/diet`, {
+    await fetch(`${import.meta.env.VITE_BACKEND_BASEURL}/users/${userId}/diet`, {
       method: "PUT",
       headers: { 
         "Content-Type": "application/json",
@@ -74,7 +74,7 @@ const DietPage = () => {
   
   const getDiet = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/users/${userId}/diet`, {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_BASEURL}/users/${userId}/diet`, {
         headers: { "Authorization": `Bearer ${token}` }
       });
       if (!response.ok) {

@@ -19,7 +19,7 @@ const StoragePage = () => {
 		const token = localStorage.getItem("token");
 
 		try {
-			const response = await fetch(`http://localhost:3000/users/${userId}/ingredients`, {
+			const response = await fetch(`${import.meta.env.VITE_BACKEND_BASEURL}/users/${userId}/ingredients`, {
 				headers: {
 					"Authorization": `Bearer ${token}` // Makes sure that the user can only send REST api if they have a token
 				}
@@ -62,7 +62,7 @@ const StoragePage = () => {
 		}
 
 		try {
-			const response = await fetch(`http://localhost:3000/users/${userId}/ingredients`, {
+			const response = await fetch(`${import.meta.env.VITE_BACKEND_BASEURL}/users/${userId}/ingredients`, {
 			method: "POST",
 			headers: { 
 				"Content-Type": "application/json",
@@ -102,7 +102,7 @@ const StoragePage = () => {
 		const token = localStorage.getItem("token");
 
 		try {
-			const response = await fetch(`http://localhost:3000/users/${userId}/ingredients`, {
+			const response = await fetch(`${import.meta.env.VITE_BACKEND_BASEURL}/users/${userId}/ingredients`, {
 				method: "DELETE",
 				headers: {
 					"Authorization": `Bearer ${token}`,
@@ -140,7 +140,7 @@ const StoragePage = () => {
 		}
 
 		try {
-			const response = await fetch(`http://localhost:3000/users/${userId}/ingredients`, {
+			const response = await fetch(`${import.meta.env.VITE_BACKEND_BASEURL}/users/${userId}/ingredients`, {
 				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",

@@ -17,7 +17,7 @@ export default function LoginPage() {
 
 		// Sends a POST request, if successful, creates a token for the user and goes to their ingredient page
 		try {
-			const response = await fetch("http://localhost:3000/login", {
+			const response = await fetch(`${import.meta.env.VITE_BACKEND_BASEURL}/login`, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify(form) // converts form data into json and puts it into req.body in backend

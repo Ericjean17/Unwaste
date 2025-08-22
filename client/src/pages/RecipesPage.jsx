@@ -169,7 +169,7 @@ const RecipesPage = () => {
 
       try {
         // Get user diet
-        const diet = await fetch(`http://localhost:3000/users/${userId}/recipes?data=diet`, {
+        const diet = await fetch(`${import.meta.env.VITE_BACKEND_BASEURL}/users/${userId}/recipes?data=diet`, {
           headers: { "Authorization" : `Bearer ${token}`}
         });
         const dietData = await diet.json();
@@ -198,7 +198,7 @@ const RecipesPage = () => {
         }));
 
         // Get user ingredients
-        const ingredients = await fetch(`http://localhost:3000/users/${userId}/recipes?data=ingredients`, {
+        const ingredients = await fetch(`${import.meta.env.VITE_BACKEND_BASEURL}/users/${userId}/recipes?data=ingredients`, {
           headers: { "Authorization" : `Bearer ${token}`}
         });
 
