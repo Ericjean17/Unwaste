@@ -6,13 +6,9 @@ const bcrypt = require("bcrypt");
 const pool = require("./db").default;
 const jwt = require("jsonwebtoken");
 
-const corsOptions = {
-    // origin: [`${process.env.FRONTEND_URL}`], // only accept requests from frontend server (vite)
-    origin: "https://unwaste.vercel.app",
-};
-
 // middleware
-app.use(cors(corsOptions)); // allows frontend to make requests to backend
+app.use(cors({ origin: 'https://unwaste.vercel.app' })); // allows frontend to make requests to backend
+// app.use(cors({ origin: `${process.env.FRONTEND_URL}` }));
 app.use(express.json()); // allows json data to be put into req.body
 
 function authenticateToken(req, res, next) {
