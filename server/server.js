@@ -9,10 +9,14 @@ const jwt = require("jsonwebtoken");
 // middleware
 // app.use(cors({ origin: "http://localhost:5173" }));
 // app.use(cors());
-app.use(cors({ origin: `${process.env.FRONTEND_URL}` }));
+app.use(cors({ 
+    origin: `${process.env.FRONTEND_URL}`,
+    credentials: true,
+    optionsSuccessStatus: 200,
+}));
 // app.use(cors({ origin: 'https://unwaste.vercel.app' })) // to be changed later to vercel url
 app.use(express.json()); // allows json data to be put into req.body
-app.options('*', cors()) // include before other routes
+
 function authenticateToken(req, res, next) {
     const authHeader = req.headers['authorization']; // Browsers send headers like "Bearer [string of chars]"
     const token = authHeader && authHeader.split(" ")[1]; // Get the token in "Bearer <token>"
