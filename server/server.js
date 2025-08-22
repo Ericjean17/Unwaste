@@ -6,31 +6,9 @@ const bcrypt = require("bcrypt");
 const pool = require("./db").default;
 const jwt = require("jsonwebtoken");
 
-// const corsOptions = {
-//     origin: [`${process.env.FRONTEND_URL}`], // only accept requests from frontend server (vite)
-//     credentials: true
-// };
-const allowedOrigins = [
-  process.env.FRONTEND_URL,
-  "http://localhost:5173", 
-  "http://localhost:3000"
-];
-
 const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin) return callback(null, true);
-
-    if (allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS: " + origin));
-    }
-  },
-  credentials: true
+    origin: [`${process.env.FRONTEND_URL}`], // only accept requests from frontend server (vite)
 };
-
-app.use(cors(corsOptions));
-
 
 // middleware
 app.use(cors(corsOptions)); // allows frontend to make requests to backend
