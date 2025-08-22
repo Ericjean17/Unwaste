@@ -29,6 +29,7 @@ function authenticateToken(req, res, next) {
         }
     }
 };
+app.get("/", (req, res) => res.status(200).json({ message: "Successfully deployed" }))
 
 app.post("/register", async (req, res) => {
     const { username, password } = req.body;
