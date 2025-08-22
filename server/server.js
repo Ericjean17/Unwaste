@@ -8,7 +8,11 @@ const jwt = require("jsonwebtoken");
 
 // middleware
 // app.use(cors({ origin: 'https://unwaste.vercel.app' }));
-app.use(cors());
+app.use(cors({
+    origin: ["https://unwaste.vercel.app/"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true
+}));
 // app.use(cors({ origin: `${process.env.FRONTEND_URL}` }));
 app.use(express.json()); // allows json data to be put into req.body
 
