@@ -7,7 +7,7 @@ const pool = require("./db").default;
 const jwt = require("jsonwebtoken");
 
 const corsOptions = {
-    origin: ["http://localhost:5173"], // only accept requests from frontend server (vite)
+    origin: [`${process.env.FRONTEND_URL}`], // only accept requests from frontend server (vite)
 };
 
 // middleware
