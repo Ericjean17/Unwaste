@@ -8,7 +8,7 @@ const jwt = require("jsonwebtoken");
 
 const corsOptions = {
     // origin: [`${process.env.FRONTEND_URL}`], // only accept requests from frontend server (vite)
-    origin: true, credentials: true
+    origin: "https://unwaste.vercel.app",
 };
 
 // middleware
