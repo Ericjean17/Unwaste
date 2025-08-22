@@ -3,7 +3,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors"); 
 const bcrypt = require("bcrypt");
-const pool = require("./db").default;
+const pool = require("./db");
 const jwt = require("jsonwebtoken");
 
 // middleware
@@ -224,7 +224,10 @@ app.get("/users/:id/recipes", authenticateToken, async (req, res) => {
     }
 })
 
-app.listen(3000, () => {
-    console.log("listening on port 3000");
-});
+if (require.main === module) {
+    const port = process.env.PORT || 3000;
+    app.listen(port, () => {
+        console.log(`listening on port ${port}`);
+    });
+}
 module.exports = app;
