@@ -7,7 +7,7 @@ import { Analytics } from "@vercel/analytics/react"
 createRoot(document.getElementById('root')).render(
   // Strict mode is for development, alerts appear twice
   <StrictMode>
-    <App />
     <Analytics />
+    <App />
   </StrictMode>
 )
