@@ -3,7 +3,7 @@ const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
 const ai = new GoogleGenAI({ apiKey: apiKey });
 
 export const generateRecipeSuggestions = async (input, ingredients, diet) => {  
-  const numRecipes = 2;
+  const numRecipes = 3;
 
   try {
     // ingredients prop is in form [{...}, {...}, {...}]
@@ -33,8 +33,8 @@ export const generateRecipeSuggestions = async (input, ingredients, diet) => {
       }
     ]
     Recommend popular recipes from it's own country of origin to make it more authentic and that are highly rated in the world for those recipes if possible. 
-    Based on these recipes, make the nutrition as accurate as possible. For example, 500g of bulgogi should contain around 240g of protein, where 100g of bulgogi is 48g of protein.
-    This does not mean to always include a bulgogi recipe by the way, it is just an example of accuracy of nutrition for a recipe.
+    Based on these recipes, make the nutrition as accurate as possible. For example, just find how much protein is in 100g of a certain meat, and do that for
+    each ingredient, and add up the total nutrition which includes calories, carbs, fat, fiber, protein, sodium, and sugar.
     `;
 
     const response = await ai.models.generateContent({

@@ -9,10 +9,6 @@
   cursor: default;
 }
 
-.recipe-card:hover {
-  transform: scale(1.05);
-}
-
 .recipe-card-container img {
   aspect-ratio: 4 / 3;
   width: 100%;
@@ -49,7 +45,7 @@
   border-radius: 16px;
   margin-bottom: 1rem;
   box-shadow: 0 2px 6px rgba(255, 88, 88, 0.3);
-  animation: pulse 1.5s infinite;
+  animation: pulse 1.75s infinite;
 }
 
 @keyframes pulse {

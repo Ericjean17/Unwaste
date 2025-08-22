@@ -19,7 +19,7 @@ const RecipeModal = ({ name, image, ingredients, amount, steps, description, nut
   
   return (
     <div className='recipe-modal-backdrop' onClick={onClose}>
-      <div className='recipe-modal' onClick={(e) => e.stopPropagation()}>
+      <div className='recipe-modal' onClick={(e) => e.stopPropagation()}> {/*stopPropagation prevents backdrop onClick from running */}
         <div className='modal-header'>
           <h3>{name}</h3>
           <CloseIcon className='close-btn' onClick={onClose}/>
@@ -29,7 +29,6 @@ const RecipeModal = ({ name, image, ingredients, amount, steps, description, nut
         <div>
           <h3>Ingredients:</h3>
           <ul>
-            {/* {ingredients?.map((ingredient, i) => <li key={i}>{ingredient}</li>)} */}
             {updatedIngredients.map((ingredient, i) => <li key={i}>{ingredient}</li>)}
           </ul>
         </div>

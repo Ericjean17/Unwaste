@@ -8,9 +8,9 @@ const RecipeCard = ({ image, recipe, description, recommended, onClick, delay}) 
       className="recipe-card" 
       onClick={onClick} 
       initial={{ y: 20, opacity: 0 }} // starts slightly below
-      animate={{ y: 0, opacity: 1 }} 
-      transition={{ duration: 0.5, delay: delay }}
-      whileHover={{ scale: 1.025, transition: { duration: 0.1 }}} 
+      animate={{ y: 0, opacity: 1, transition: { duration: 0.5 }, delay: delay}} 
+      transition={{ delay: delay }}
+      whileHover={{ scale: 1.025, transition: { duration: 0.01 }}} 
     >
       <div className="recipe-card-container">
         <div>
@@ -21,8 +21,13 @@ const RecipeCard = ({ image, recipe, description, recommended, onClick, delay}) 
           <p>{description}</p>
         </div>
         <div className="recommend-recipe">
-          {recommended ? <span>Recommended&nbsp;
-          <RecommendIcon fontSize="small" className="recommend-icon"/></span>: ""}
+          {recommended 
+            ? <span>
+                Recommended&nbsp;
+                <RecommendIcon fontSize="small" className="recommend-icon"/>
+              </span>
+            : ""
+          }
         </div>
       </div>
     </motion.div>

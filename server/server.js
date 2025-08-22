@@ -61,7 +61,7 @@ app.post("/login", async (req, res) => {
         // Check if user exists inside database
         const userQuery = await pool.query("SELECT * FROM users WHERE username = $1", [username])
         if (userQuery.rows.length === 0) {
-            return res.status(401).json({ message: "Invalid username or password" })
+            return res.status(401).json({ message: "Invalid username" })
         }
         
         const user = userQuery.rows[0]; // Stores their id number, unique username and password
@@ -69,7 +69,7 @@ app.post("/login", async (req, res) => {
         // Check if user inputted password matches the hashed password 
         const validPassword = await bcrypt.compare(password, user.hashed_password);
         if (!validPassword) {
-            return res.status(401).json({ message: "Invalid username or password" })
+            return res.status(401).json({ message: "Invalid password" })
         }
         
         // Creates a token that includes the user's id, use localStorage to store the userId and token

@@ -41,7 +41,7 @@ const IngredientCard = ({ category, ingredients, handleDelete, handleUpdate }) =
 	}
 
 	return (
-		<div className="card">
+		<div className="ingredient-card">
 			<div className="card-container">
 				<div className="category-header">
 					<div className="left"></div>
@@ -50,13 +50,14 @@ const IngredientCard = ({ category, ingredients, handleDelete, handleUpdate }) =
 						<ExpandMoreIcon 
 							style={{
 								transition: 'transform 0.3s ease',
-								transform: isCollapsed ? 'rotate(180deg)' : 'rotate(0deg)'
+								transform: isCollapsed ? 'rotate(180deg)' : 'rotate(0deg)',
+								marginTop: '2px'
         			}}
 							className={`expand-icon ${isCollapsed ? "rotated" : ""}`}/>
 					</span>
 				</div>
 				<div className={`category-content ${isCollapsed ? "collapsed" : ""}`} style={{
-					transition: isCollapsed ? "max-height 0.3s ease-out" : "max-height 0.65s ease-in"
+					transition: isCollapsed ? "max-height 0.5s ease-out" : "max-height 0.5s ease-in"
 				}}>
 					{ingredients.length > 0 ? (
 						<ul className="ingredients">

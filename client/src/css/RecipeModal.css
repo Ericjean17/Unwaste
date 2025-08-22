@@ -75,11 +75,11 @@
   .recipe-modal {
     width: 100vw;
     height: 100vh;
-    margin: 0;             /* remove margin so it fills screen */
-    border-radius: 0;      /* no rounded corners */
+    margin: 0; /* remove margin so it fills screen */
+    border-radius: 0;  
     max-width: none;
     max-height: none;
-    box-shadow: none;      /* no floating shadow */
+    box-shadow: none;  
   }
 
   .modal-img {
@@ -87,5 +87,6 @@
   }
 }
 .modal-steps {
+  color: rgba(34, 34, 34, 0.918);
   margin-left: 1rem;
 }

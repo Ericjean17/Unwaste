@@ -42,13 +42,14 @@ const RecipesPage = () => {
         }
 
         const response = await generateRecipeSuggestions(recipeInput, userIngredients, dietArray);
+        // const fetchedRecipes = response.json();
         const fetchedRecipes = JSON.parse(response); // fetchedRecipes is [{...}, {...}] from JSON string
         // console.log(fetchedRecipes);
         setRecipes(fetchedRecipes || []);
 
         // Remove the alert - it's showing [object Object]
         // alert(`Generated recipes: ${fetchedRecipes}`);
-        console.log(`Generated ${fetchedRecipes?.length || 0} recipes`);
+        // console.log(`Generated ${fetchedRecipes?.length || 0} recipes`);
       } catch (error) {
         console.error("Failed to generate recipes:", error);
         alert("Failed to generated recipes. Try again.");
@@ -88,7 +89,7 @@ const RecipesPage = () => {
       let itemIndex = 0;
       for (const item of data.items) {
         // const url = item.link;
-        const url = new URL(item.link); // safer than string includes
+        const url = new URL(item.link);
         if (blockedDomains.some(domain => url.hostname.includes(domain))) {
           itemIndex++;
           continue;
@@ -195,11 +196,6 @@ const RecipesPage = () => {
           spicinessLevel: dietData.pref_spicy,
           allergies: dietData.allergies || []
         }));
-        
-        if (!diet.ok) {
-          alert("Something went wrong");
-          return;
-        }
 
         // Get user ingredients
         const ingredients = await fetch(`http://localhost:3000/users/${userId}/recipes?data=ingredients`, {
@@ -240,7 +236,7 @@ const RecipesPage = () => {
         <div className="generated-recipes">
           {isLoading && (
             <div className="loader">
-              <div className="inner-circle"></div>
+              {/* <div className="inner-circle"></div> */}
             </div>
           )}
           {!isLoading && (

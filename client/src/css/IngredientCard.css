@@ -8,7 +8,6 @@
 }
 
 .category {
-    text-align: center;
     font-size: 1.25rem;
     font-weight: 700;
 }
@@ -46,15 +45,12 @@
     box-sizing: border-box;
 }
 
-/* .delete-btn {
-    color: #f44336;
-} */
-
 .input-btns {
     display: flex;
     flex-shrink: 0;
     gap: 0.25rem;
 }
+
 .delete-btn:hover, .edit-btn:hover {
     /* background-color: #e0e0e0;
     border-radius: 50px; */
@@ -91,21 +87,9 @@
     color: #4caf50;
 }
 
-/* .save-btn:hover {
-    color: white;
-    border-radius: 50px;
-    background-color: #4caf50;
-} */
-
 .cancel-btn {
     color: #f44336;
 }
-
-/* .cancel-btn:hover {
-    background-color: #f44336;
-    color: white;
-    border-radius: 50px;
-} */
 
 .category-header {
     cursor: pointer;
@@ -115,7 +99,9 @@
     margin-top: 0.25rem;
     margin-bottom: 0.75rem;
     transition: background-color 0.2s ease;
+    align-items: center;
 }
+
 .left {
     flex: 1;
 }
@@ -132,7 +118,7 @@
 }
 
 .category-content {
-  max-height: 1000px; 
+  max-height: 3000px; 
   opacity: 1;
   transition: max-height 0.3s ease-out;
   overflow: hidden;

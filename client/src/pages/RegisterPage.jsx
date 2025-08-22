@@ -78,7 +78,6 @@ export default function RegisterPage() {
 						</div>
 						<div className="register-button">
 							<button className="fw-bold" type="submit">
-								{/* <a href="/home">Sign Up</a> */}
 								Sign Up
 							</button>
 						</div>
