@@ -7,14 +7,9 @@ const pool = require("./db").default;
 const jwt = require("jsonwebtoken");
 
 // middleware
-app.use(cors({ origin: 'https://unwaste.vercel.app' }));
+// app.use(cors({ origin: 'https://unwaste.vercel.app' }));
+app.use(cors());
 // app.use(cors({ origin: `${process.env.FRONTEND_URL}` }));
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-  next();
-});
 app.use(express.json()); // allows json data to be put into req.body
 
 function authenticateToken(req, res, next) {
