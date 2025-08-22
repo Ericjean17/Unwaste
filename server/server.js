@@ -7,8 +7,32 @@ const pool = require("./db").default;
 const jwt = require("jsonwebtoken");
 
 // middleware
-// app.use(cors({ origin: 'https://unwaste.vercel.app' }));
-app.use(cors());
+// Configure CORS for deployed and local environments, and ensure OPTIONS preflight succeeds with HTTP 200
+const allowedOrigins = [
+    'https://unwaste.vercel.app',
+    'http://localhost:5173',
+];
+
+const corsOptions = {
+    origin: function (origin, callback) {
+        if (!origin) return callback(null, true); // allow non-browser or same-origin
+        if (allowedOrigins.includes(origin)) return callback(null, true);
+        return callback(new Error('Not allowed by CORS'));
+    },
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: false,
+    optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptions));
+// Safe global preflight response without using app.options
+app.use((req, res, next) => {
+    if (req.method === 'OPTIONS') {
+        return res.sendStatus(204);
+    }
+    next();
+});
 // app.use(cors({ origin: `${process.env.FRONTEND_URL}` }));
 app.use(express.json()); // allows json data to be put into req.body
 
@@ -203,3 +227,4 @@ app.get("/users/:id/recipes", authenticateToken, async (req, res) => {
 app.listen(3000, () => {
     console.log("listening on port 3000");
 });
+module.exports = app;
